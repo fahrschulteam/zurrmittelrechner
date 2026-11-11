@@ -299,7 +299,7 @@ dl.gloss dd{margin:0}
 .qc-chips.multi button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
 @media (max-width:420px){.qc-chips button{padding:9px 4px;font-size:.88rem}}
 .q{max-width:640px;margin:0 auto;display:grid;gap:14px}
-.q-res{position:sticky;bottom:16px;z-index:12;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:14px;padding:12px 12px 12px 16px;box-shadow:0 -6px 24px rgba(20,24,30,.16)}
+.q-res{position:relative;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:14px;padding:12px 12px 12px 16px;box-shadow:0 -6px 24px rgba(20,24,30,.16)}
 .q-res-in{flex:1;min-width:0;display:flex;gap:12px;align-items:center}
 .q-res .qn{font-family:var(--f-display);font-weight:700;font-size:2.7rem;line-height:.9;color:var(--accent);min-width:1.1ch;text-align:center}
 .q-res.ok .qn{color:var(--ok)} .q-res.bad .qn{color:var(--bad)}
@@ -384,8 +384,18 @@ details.qacc .qc:last-child{border-bottom:0}
 
 
 /* ---------- Handy ---------- */
+@media (max-width:960px){.nav a[data-view="uebungen"]{display:none}}
+.rw{max-width:900px;margin:0 auto;display:grid;gap:16px}
+.rw-res{padding:14px 18px;display:flex;align-items:center;gap:14px;border-left:6px solid var(--accent)}
+.rw-res.ok{border-left-color:var(--ok)}.rw-res.bad{border-left-color:var(--bad)}
+.rw-res .qn{font-family:var(--f-display);font-weight:700;font-size:2.6rem;line-height:.9;color:var(--accent);min-width:1.1ch;text-align:center}
+.rw-res.ok .qn{color:var(--ok)}.rw-res.bad .qn{color:var(--bad)}
+.rw-res .qt{display:grid;line-height:1.25}.rw-res .qt b{font-family:var(--f-display);font-size:1.2rem}.rw-res .qt span{font-size:.88rem;color:var(--muted)}.rw-res .qt em{font-style:normal;font-size:.82rem;font-weight:700;color:var(--warn)}
+#viewRechenweg h3{font-family:var(--f-display);font-size:1.2rem;margin:26px 0 8px}
+
 .mbar{display:none}
 @media (max-width:960px){
+  .foot{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))!important}
   .nav{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;width:auto;border-radius:0;border:0;border-top:1px solid var(--line);background:var(--panel);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));box-shadow:0 -4px 16px rgba(0,0,0,.06);overflow:visible}
   .nav a{flex:1;flex-direction:column;gap:2px;padding:6px 4px;font-size:.72rem;justify-content:center;border-radius:8px}
   .nav a span{display:block!important}
@@ -417,7 +427,7 @@ details.qacc .qc:last-child{border-bottom:0}
   .view-head h1{font-size:1.6rem}
 }
 @media (max-width:960px){#bigBtn{display:none}.brand{flex:1;min-width:0}.prod{min-width:0}.prod b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
-@media (max-width:960px){.q-res{bottom:calc(72px + env(safe-area-inset-bottom,0px))}.q{padding-bottom:8px}}
+
 @media (max-width:520px){.prod{padding-left:10px}.prod b{font-size:1.02rem}.logo{height:26px}.brand{gap:10px}.icon-btn{width:36px;height:36px}.tools{gap:4px}.dims .inp .u{display:none}.task{padding:16px}}
 @media print{.mbar{display:none!important}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -431,7 +441,7 @@ details.qacc .qc:last-child{border-bottom:0}
     </div>
     <nav class="nav" aria-label="Bereiche">
       <a href="#schnell" data-view="schnell"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span>Schnell</span></a>
-      <a href="#rechner" data-view="rechner"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h8"/></svg><span>Rechner</span></a>
+      <a href="#rechenweg" data-view="rechenweg"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M8 8h3M9.5 6.5v3M13 8h3M8 15l3 3M11 15l-3 3M13 16.5h3"/></svg><span>Rechenweg</span></a>
       <a href="#uebungen" data-view="uebungen"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Übungen</span></a>
       <a href="#reibwerte" data-view="reibwerte"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18M9 6v12"/></svg><span>Reibwerte</span></a>
       <a href="#wissen" data-view="wissen"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></svg><span>Wissen</span></a>
@@ -558,16 +568,35 @@ details.qacc .qc:last-child{border-bottom:0}
 <!-- ================= SCHNELL ================= -->
 <section id="viewSchnell" hidden>
   <div class="q">
+    <div class="solbar" id="qSolbar" hidden></div>
     <div class="q-switch">
       <div class="seg seg-sm" role="group" aria-label="Norm"><button type="button" id="qDin">DIN EN 12195-1</button><button type="button" id="qVdi">VDI 2700</button></div>
       <div class="seg seg-sm" role="group" aria-label="Zurrverfahren"><button type="button" id="qN">Niederzurren</button><button type="button" id="qD">Diagonalzurren</button></div>
     </div>
-    <div class="card q-viz" aria-live="polite"><div class="q-viz-h"><b>Ladeplan</b><span id="qVizCap">Draufsicht</span></div><div id="qViz"></div></div>
     <div class="card q-ctrl" id="qCtrl"></div>
-    <button type="button" class="q-reset" id="qReset"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Alle Werte zurücksetzen</button>
     <div class="q-res" id="qRes" aria-live="polite"><div class="q-res-in" id="qResIn"></div>
-      <button type="button" class="q-formel" id="qFormel" aria-label="Formel und Lösung anzeigen"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5M8 17h3"/></svg><span>Formel &amp;<br>Lösung</span></button></div>
-    <p class="hint q-foot">Beiwerte nach Norm fest eingestellt. Alle Einstellungen und Grafiken findest du im Bereich „Rechner“.</p>
+      <button type="button" class="q-formel" id="qFormel" aria-label="Formel und Lösung anzeigen"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5M8 17h3"/></svg><span>Rechen-<br>weg</span></button></div>
+    <div class="card q-viz" aria-live="polite"><div class="q-viz-h"><b>Ladeplan</b><span id="qVizCap">Draufsicht</span></div><div id="qViz"></div></div>
+
+    <button type="button" class="q-reset" id="qReset"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Alle Werte zurücksetzen</button>
+
+    <p class="hint q-foot">Formeln und Lösung Schritt für Schritt findest du unter „Rechenweg“.</p>
+  </div>
+</section>
+
+<!-- ================= RECHENWEG ================= -->
+<section id="viewRechenweg" hidden>
+  <div class="rw">
+    <div class="view-head"><div><h1>Rechenweg</h1><p id="qSheetNorm"></p></div>
+      <a href="#schnell" class="btn" id="rwBack" data-view="schnell">← Zurück zur Eingabe</a></div>
+    <div class="card rw-res" id="rwRes"></div>
+    <div class="card panel" style="padding-top:18px">
+      <h2 class="h">Rutschen</h2>
+      <p class="lead">Richtung wählen. Jeder Schritt zeigt erst die Formel, dann die eingesetzten Zahlen.</p>
+      <div class="dirpills" id="qPills"></div>
+      <ol class="steps" id="qSteps"></ol>
+      <div id="qKipp"></div>
+    </div>
   </div>
 </section>
 
@@ -630,23 +659,10 @@ details.qacc .qc:last-child{border-bottom:0}
   </div>
 </section>
 </main>
-<div class="sheet" id="sheet" hidden>
-  <div class="sheet-bg" id="sheetBg"></div>
-  <div class="sheet-in" role="dialog" aria-modal="true" aria-labelledby="sheetH">
-    <div class="sheet-grip"></div>
-    <header class="sheet-head"><h2 id="sheetH">Formel und Lösung</h2><button type="button" class="icon-btn" id="sheetX" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
-    <div class="sheet-body">
-      <p class="hint" id="qSheetNorm" style="margin:0 0 10px"></p>
-      <div class="dirpills" id="qPills"></div>
-      <ol class="steps" id="qSteps"></ol>
-      <div id="qKipp"></div>
-    </div>
-  </div>
-</div>
 <div class="mbar" id="mbar" hidden><button type="button" id="mbarBtn"><span class="mnum" id="mbarNum"></span><span class="mtxt"><b id="mbarT"></b><small id="mbarS"></small></span><span class="mgo">Details ↓</span></button></div>
 
 <footer class="foot">
-  <p>Zurrmittelrechner · Version 2.0 · © Fahrschulteam Lingen · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info</p>
+  <p>Zurrmittelrechner · Version 2.3 · © Fahrschulteam Lingen · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info</p>
   <p>Berechnung nach DIN EN 12195-1 oder VDI 2700 Blatt 2. Alle Angaben ohne Gewähr. Rechenhilfe, kein Ersatz für die Prüfung im Einzelfall.</p>
 </footer>
 
@@ -1059,9 +1075,9 @@ function render(){
   $('dirpills').querySelectorAll('button').forEach(b=>b.onclick=()=>{dirTab=b.dataset.k;render();});
   const r=rows.find(x=>x.k===dirTab);
   const stepsHtml=mode==='nieder'?stepsNieder(p,r):stepsDirekt(p,r);
-  if(curView==='schnell'){$('steps').innerHTML='';$('qSteps').innerHTML=stepsHtml;$('qKipp').innerHTML=mode==='nieder'?'<h3>Kippgefahr</h3>'+kippHtml(p,rows,tgov):'';
+  if(curView==='schnell'||curView==='rechenweg'){$('steps').innerHTML='';$('qSteps').innerHTML=stepsHtml;$('qKipp').innerHTML=mode==='nieder'?'<h3>Kippgefahr</h3>'+kippHtml(p,rows,tgov):'';
     $('qPills').innerHTML=$('dirpills').innerHTML;$('qPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{dirTab=b.dataset.k;render();});
-    $('qSheetNorm').textContent=(norm==='vdi'?'VDI 2700 Blatt 2':'DIN EN 12195-1')+' · '+(mode==='nieder'?'Niederzurren':'Diagonalzurren')+' · Richtung wählen:';}
+    $('qSheetNorm').textContent='Formeln und Lösung für die Werte aus „Schnell“ · '+(norm==='vdi'?'VDI 2700 Blatt 2':'DIN EN 12195-1')+' · '+(mode==='nieder'?'Niederzurren':'Diagonalzurren');}
   else{$('steps').innerHTML=stepsHtml;$('qSteps').innerHTML='';$('qKipp').innerHTML='';}
   printTable(p,mode==='nieder'?null:gov);
   updMbar();qRender();
@@ -1094,7 +1110,7 @@ function buildMu(){
 $('muSel').innerHTML=FR.map((gr,gi)=>`<optgroup label="${gr.g}">${gr.i.map((it,ii)=>`<option value="${gi}-${ii}">${gr.np?'':'auf '}${it[0]} – μ ${fmt2(it[1])}</option>`).join('')}</optgroup>`).join('')+'<optgroup label="Sonstiges"><option value="custom">eigener Wert …</option></optgroup>';
 $('muTbl').innerHTML='<thead><tr><th>Ladegut</th><th>Ladefläche / Unterlage</th><th style="text-align:right">μ</th></tr></thead><tbody>'+
   FR.map((gr,gi)=>`<tr class="grp"><td colspan="3">${gr.g}</td></tr>`+gr.i.map((it,ii)=>`<tr data-id="${gi}-${ii}" tabindex="0"><td>${gr.g}</td><td>${it[0]}</td><td class="mu">${fmt2(it[1])}</td></tr>`).join('')).join('')+'</tbody>';
-$('muTbl').querySelectorAll('tr[data-id]').forEach(tr=>{tr.onclick=()=>{applyMu(tr.dataset.id);go('rechner');};tr.onkeydown=e=>{if(e.key==='Enter')tr.onclick();};});
+$('muTbl').querySelectorAll('tr[data-id]').forEach(tr=>{tr.onclick=()=>{applyMu(tr.dataset.id);go('schnell');};tr.onkeydown=e=>{if(e.key==='Enter')tr.onclick();};});
 }
 buildMu();
 $('muSel').onchange=e=>applyMu(e.target.value);
@@ -1209,8 +1225,8 @@ function showTask(i){curTask=i;const t=TASKS[i];
   $('solBtn').onclick=()=>showSolution(i);$('backList').onclick=showList;window.scrollTo(0,0);}
 function showSolution(i){const t=TASKS[i];
   if(norm!=='din')setNorm('din',true);
-  loadValues(t.v);setMode(t.art==='d'?'direkt':'nieder');setRtab('uebersicht');go('rechner',true);
-  const sb=$('solbar');sb.hidden=false;
+  loadValues(t.v);setMode(t.art==='d'?'direkt':'nieder');setRtab('uebersicht');go('schnell',true);
+  const sb=$('qSolbar');sb.hidden=false;
   sb.innerHTML=`<span>Lösung zu Aufgabe ${i+1}: ${t.t}</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="backTask">← Zurück zur Aufgabe</button><button type="button" class="btn btn-ghost" id="closeSol">Schließen</button></span>`;
   $('backTask').onclick=()=>{go('uebungen');showTask(i);};$('closeSol').onclick=()=>{sb.hidden=true;curTask=null;};}
 
@@ -1237,15 +1253,15 @@ $('sketches').innerHTML=`<svg class="sketch" viewBox="0 0 320 170" role="img" ar
   <text x="160" y="182" text-anchor="middle" style="fill:var(--muted)">Diagonalzurren von oben, Fahrtrichtung →</text></svg>`;
 
 /* ---------- Navigation ---------- */
-const VIEWS={schnell:'viewSchnell',rechner:'viewRechner',uebungen:'viewUebungen',reibwerte:'viewReibwerte',wissen:'viewWissen'};
-function go(view,keep){if(!VIEWS[view])view='rechner';curView=view;
+const VIEWS={schnell:'viewSchnell',rechenweg:'viewRechenweg',rechner:'viewRechner',uebungen:'viewUebungen',reibwerte:'viewReibwerte',wissen:'viewWissen'};
+function go(view,keep){if(!VIEWS[view]||view==='rechner')view='schnell';if(view==='uebungen'&&matchMedia('(max-width:960px)').matches)view='schnell';curView=view;
   Object.entries(VIEWS).forEach(([k,id])=>$(id).hidden=k!==view);
   $('mbar').hidden=view!=='rechner';
   document.querySelectorAll('.nav a').forEach(a=>a.setAttribute('aria-current',a.dataset.view===view?'page':'false'));
   if(view==='uebungen'&&curTask===null)showList();
   if(view==='schnell'){qBuild();}
   render();
-  if(view!=='rechner'&&!keep){$('solbar').hidden=true;}
+  if(view!=='rechner'&&!keep){$('solbar').hidden=true;if($('qSolbar'))$('qSolbar').hidden=true;}
   if(location.hash!=='#'+view){try{history.replaceState(null,'','#'+view)}catch(e){location.hash=view}}
   window.scrollTo(0,0);}
 document.querySelectorAll('.nav a').forEach(a=>a.onclick=e=>{e.preventDefault();if(a.dataset.view==='uebungen')curTask=null;go(a.dataset.view);});
@@ -1258,7 +1274,7 @@ applyTheme(store.get('zr-theme'));
 $('themeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
   const nt=cur==='dark'?'light':'dark';applyTheme(nt);store.set('zr-theme',nt);};
 let topLevel=false;try{topLevel=window.top===window.self;}catch(e){topLevel=false;}
-if(topLevel){$('printBtn').hidden=false;$('printBtn').onclick=()=>{go('rechner',true);window.print();};}
+if(topLevel){$('printBtn').hidden=false;$('printBtn').onclick=()=>{go('rechenweg');setTimeout(()=>window.print(),300);};}
 window.addEventListener('beforeprint',()=>document.querySelectorAll('.rpane').forEach(p=>p.dataset.print=(p.dataset.p==='kippen'&&mode!=='nieder')?'0':'1'));
 
 
@@ -1270,6 +1286,7 @@ const QDEF={
     {id:'alpha',l:'Zurrwinkel α',s:'Gurt zur Ladefläche',u:'°',min:20,max:90,step:1,bs:5,pre:[45,60,75,90]},
     {k:1},
     {acc:'blk',t:'Formschluss an Wänden',items:[{blk:1}]},
+    {acc:'bw',t:'Beiwerte der Norm',items:[{bw:1}]},
     {acc:'dims',t:'Maße für die Kipp-Prüfung',items:[
       {id:'H',l:'Höhe',u:'m',min:0.2,max:4,step:0.05,bs:0.1},
       {id:'B',l:'Breite',u:'m',min:0.2,max:2.5,step:0.05,bs:0.1},
@@ -1279,12 +1296,17 @@ const QDEF={
     {id:'lc',l:'Zurrkraft LC',s:'je Zurrmittel, Etikett',u:'daN',min:500,max:10000,step:50,bs:100,pre:[1600,2000,2500,5000]},
     {id:'alphaD',l:'Vertikalwinkel α',s:'Zurrmittel zur Ladefläche',u:'°',min:5,max:85,step:1,bs:5,pre:[30,45,60]},
     {id:'beta',l:'Horizontalwinkel β',s:'zur Längsachse, von oben',u:'°',min:5,max:85,step:1,bs:5,pre:[30,45,60]},
-    {acc:'blk',t:'Formschluss an Wänden',items:[{blk:1}]}]
+    {acc:'blk',t:'Formschluss an Wänden',items:[{blk:1}]},
+    {acc:'bw',t:'Beiwerte der Norm',items:[{bw:1}]}]
 };
 const QOPEN=new Set();
 const fmtQ=(x,st)=>{const d=st<0.01?3:st<0.1?2:st<1?2:0;return Number(x).toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:d});};
-const qFlat=()=>{const o=[];QDEF[mode].forEach(d=>{if(d.acc)d.items.forEach(i=>o.push(i));else o.push(d);});return o;};
+const qFlat=()=>{const o=[];QDEF[mode].forEach(d=>{if(d.acc)d.items.forEach(i=>{if(i.bw)qBwDefs().forEach(x=>o.push(x));else o.push(i);});else o.push(d);});return o;};
+function qBwDefs(){const o=[{id:'cxf',l:'c<sub>x</sub> nach vorn',u:'',min:0,max:1.5,step:0.05,bs:0.05},{id:'cxb',l:'c<sub>x</sub> nach hinten',u:'',min:0,max:1.5,step:0.05,bs:0.05},{id:'cy',l:'c<sub>y</sub> seitlich',u:'',min:0,max:1.5,step:0.05,bs:0.05},{id:'cz',l:'c<sub>z</sub> senkrecht',u:'',min:0.1,max:1.5,step:0.05,bs:0.05}];
+  if(norm==='din'){if(mode==='nieder')o.push({id:'fsf',l:'f<sub>s</sub> nach vorn',u:'',min:1,max:2,step:0.05,bs:0.05},{id:'fso',l:'f<sub>s</sub> hinten / seitlich',u:'',min:1,max:2,step:0.05,bs:0.05});else o.push({id:'fmu',l:'f<sub>μ</sub> Direktzurren',u:'',min:0.5,max:1,step:0.05,bs:0.05});}
+  return o;}
 function qItem(d){
+  if(d.bw){return qBwDefs().map(qNum).join('')+`<div class="qc"><button type="button" class="btn" id="qNorm" style="justify-content:center">↺ Normwerte wiederherstellen</button><p class="hint" style="margin:0">${norm==='vdi'?'VDI 2700: keine Sicherheitsbeiwerte, Gleitreibbeiwert μ<sub>D</sub>.':'Normwerte: c<sub>x</sub> 0,8 / 0,5 · c<sub>y</sub> 0,5 · c<sub>z</sub> 1,0 · '+(mode==='nieder'?'f<sub>s</sub> 1,25 / 1,1':'f<sub>μ</sub> 0,75 (Gummimatte 1,0)')}</p></div>`;}
   if(d.k){return norm==='vdi'?`<div class="qc"><div class="qc-top"><label>Spannen (k-Faktor)<small>VDI 2700</small></label></div><div class="qc-chips"><button type="button" data-k="1.5">einseitig · 1,5</button><button type="button" data-k="2">beidseitig · 2,0</button></div></div>`:'';}
   if(d.blk){const a=$('aufbau').value;let h=`<div class="qc"><div class="qc-top"><label>Aufbau<small>nach DIN EN 12642</small></label></div>
       <div class="qc-chips" id="qAufbau"><button type="button" data-a="none">ohne</button><button type="button" data-a="L">Code L</button><button type="button" data-a="XL">Code XL</button></div></div>`;
@@ -1305,6 +1327,7 @@ function qNum(d){
 }
 function qAccSum(key){
   if(key==='dims')return `${nf(v('L'))} × ${nf(v('B'))} × ${nf(v('H'))} m`;
+  if(key==='bw')return $('bwWarn').hidden?'nach Norm':'⚠ verändert';
   const a=$('aufbau').value;if(a==='none')return 'ohne';
   const w=[['anlV','Stirnwand'],['anlH','Rückwand'],['anlS','Seitenwand']].filter(x=>$(x[0]).checked).map(x=>x[1]);
   return `Code ${a}${w.length?' · '+w.join(', '):' · nicht anliegend'}`;
@@ -1329,6 +1352,7 @@ function qBuild(){
     nv=Math.round(nv*1000)/1000;$('q_'+id).value=nv;rng.value=nv;push(id,nv);});
   $('qCtrl').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const id=b.dataset.p;$('q_'+id).value=b.dataset.v;$('qr_'+id).value=b.dataset.v;push(id,b.dataset.v);});
   $('q_muSel').onchange=e=>{applyMu(e.target.value);qSync();};
+  if($('qNorm'))$('qNorm').onclick=()=>{$('normBtn').click();qSync();};
   $('qCtrl').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{$('aufbau').value=b.dataset.a;updBlk();render();qBuild();});
   $('qCtrl').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{$(b.dataset.c).checked=!$(b.dataset.c).checked;render();qSync();});
   $('qCtrl').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{$('k').value=b.dataset.k;render();qSync();});
@@ -1337,7 +1361,7 @@ function qBuild(){
 function qMark(){
   $('qCtrl').querySelectorAll('input[type=range]').forEach(r=>{const p=(parseFloat(r.value)-parseFloat(r.min))/(parseFloat(r.max)-parseFloat(r.min))*100;r.style.setProperty('--p',Math.min(100,Math.max(0,p))+'%');});
   $('qCtrl').querySelectorAll('[data-p]').forEach(b=>b.setAttribute('aria-pressed',String(Math.abs(parseFloat($(b.dataset.p).value)-parseFloat(b.dataset.v))<1e-9)));
-  ['dims','blk'].forEach(k=>{const e=$('qs_'+k);if(e)e.textContent=qAccSum(k);});
+  ['dims','blk','bw'].forEach(k=>{const e=$('qs_'+k);if(e)e.textContent=qAccSum(k);});
 }
 function qSync(){
   qFlat().filter(d=>d.id).map(d=>d.id).concat(['mu','P']).forEach(id=>{const n=$('q_'+id),r=$('qr_'+id);if(!n)return;n.value=$(id).value;r.value=$(id).value;});
@@ -1390,16 +1414,14 @@ function qViz(){
 }
 $('qReset').onclick=()=>{const keepN=norm;loadValues({});if(keepN==='vdi')setNorm('vdi');updBlk();render();qBuild();window.scrollTo({top:0,behavior:'smooth'});};
 function qRender(){
-  if(typeof curView==='undefined'||curView!=='schnell')return;
+  if(typeof curView==='undefined'||(curView!=='schnell'&&curView!=='rechenweg'))return;
   const h=$('hero');$('qRes').className='q-res '+QS.cls;qViz();
+  if($('rwRes')){$('rwRes').className='card rw-res '+QS.cls;$('rwRes').innerHTML=`<div class="qn">${QS.num}</div><div class="qt"><b>${QS.ttl}</b><span>${QS.line}</span>${QS.warn?`<em>⚠ ${QS.warn}</em>`:''}</div>`;}
   $('qResIn').innerHTML=`<div class="qn">${QS.num}</div><div class="qt"><b>${QS.ttl}</b><span>${QS.line}</span>${QS.warn?`<em>⚠ ${QS.warn}</em>`:''}</div>`;
 }
 $('qDin').onclick=()=>{setNorm('din');qBuild();};$('qVdi').onclick=()=>{setNorm('vdi');qBuild();};
 $('qN').onclick=()=>{setMode('nieder');qBuild();};$('qD').onclick=()=>{setMode('direkt');qBuild();};
-function openSheet(){$('sheet').hidden=false;document.body.style.overflow='hidden';render();$('sheetX').focus();}
-function closeSheet(){$('sheet').hidden=true;document.body.style.overflow='';$('qFormel').focus();}
-$('qFormel').onclick=openSheet;$('sheetX').onclick=closeSheet;$('sheetBg').onclick=closeSheet;
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sheet').hidden)closeSheet();});
+$('qFormel').onclick=()=>go('rechenweg');$('rwBack').onclick=e=>{e.preventDefault();go('schnell');};
 
 /* ---------- Handy-Ergebnisleiste ---------- */
 $('mbarBtn').onclick=()=>{const y=$('hero').getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:y,behavior:'smooth'});};
@@ -1425,6 +1447,6 @@ if('IntersectionObserver' in window){new IntersectionObserver(es=>{heroVis=es[0]
 loadValues({});
 setNorm('din',true);
 setMode('nieder');setRtab('uebersicht');
-go(location.hash.slice(1)||(matchMedia('(max-width:760px)').matches?'schnell':'rechner'));
+go(location.hash.slice(1)||'schnell');
 })();
 </script>
