@@ -520,7 +520,7 @@ details.qacc .qc:last-child{border-bottom:0}
         <div class="sec-h"><span class="no">4</span>Zurrgurt</div>
         <div class="field" data-f="stf"><label for="stf">Vorspannkraft<span class="sym">S<sub>TF</sub></span></label><div class="inp"><input id="stf" type="number" inputmode="decimal" min="10" max="2000" step="10" value="350"><span class="u">daN</span></div></div>
         <div class="field" data-f="alpha"><label for="alpha">Zurrwinkel<span class="sym">α</span></label><div class="inp"><input id="alpha" type="number" inputmode="decimal" min="1" max="90" step="1" value="80"><span class="u">°</span></div></div>
-        <div class="field" id="kField" hidden><label for="k">Spannen<span class="sym">k</span></label><select class="sel" id="k" style="padding:8px"><option value="1.5">einseitig · 1,5</option><option value="2">beidseitig · 2,0</option></select></div>
+        <div class="field" id="kField" hidden><label for="k">Spannen<span class="sym">k</span></label><select class="sel" id="k" style="padding:8px"><option value="2">beide Seiten · 2,0</option></select></div>
         <p class="help">S<sub>TF</sub> steht auf dem Etikett des Zurrgurts, meist 250 bis 500 daN.</p>
       </div>
 
@@ -556,7 +556,7 @@ details.qacc .qc:last-child{border-bottom:0}
             <div class="field onlyN" data-f="fsf"><label for="fsf">f<sub>s</sub> nach vorn</label><div class="inp"><input id="fsf" type="number" step="0.05" min="1" max="3" value="1.25"></div></div>
             <div class="field onlyN" data-f="fso"><label for="fso">f<sub>s</sub> hinten / seitlich</label><div class="inp"><input id="fso" type="number" step="0.05" min="1" max="3" value="1.1"></div></div>
             <div class="field onlyD" data-f="fmu" hidden><label for="fmu">f<sub>μ</sub> Direktzurren</label><div class="inp"><input id="fmu" type="number" step="0.05" min="0.5" max="1" value="0.75"></div></div>
-            <p class="help" id="vdiBwNote" hidden>VDI 2700: keine Sicherheitsbeiwerte, Reibung als Gleitreibbeiwert μ<sub>D</sub>, beim Niederzurren k-Faktor.</p>
+            <p class="help" id="vdiBwNote" hidden>VDI 2700: keine Sicherheitsbeiwerte, Reibung als Gleitreibbeiwert μ<sub>D</sub>.</p>
             <button type="button" class="btn" id="normBtn" style="justify-content:center">↺ Normwerte wiederherstellen</button>
           </div>
         </details>
@@ -652,7 +652,7 @@ details.qacc .qc:last-child{border-bottom:0}
         <thead><tr><th></th><th>DIN EN 12195-1</th><th>VDI 2700 Blatt 2 (klassisch)</th></tr></thead>
         <tbody>
           <tr><td><strong>Reibung</strong></td><td>Reibbeiwert μ nach Anhang B (höhere Werte)</td><td>Gleitreibbeiwert μ<sub>D</sub> (niedrigere Werte)</td></tr>
-          <tr><td><strong>Niederzurren</strong></td><td>Faktor 2 (beide Seiten volle S<sub>TF</sub>)</td><td>k-Faktor 1,5 einseitig, 2,0 beidseitig gespannt</td></tr>
+          <tr><td><strong>Niederzurren</strong></td><td>Faktor 2 (beide Seiten volle S<sub>TF</sub>)</td><td>Faktor 2 (beide Seiten volle S<sub>TF</sub>)</td></tr>
           <tr><td><strong>Sicherheitsbeiwert</strong></td><td>f<sub>s</sub> 1,25 nach vorn, sonst 1,1</td><td>keiner</td></tr>
           <tr><td><strong>Direktzurren</strong></td><td>μ · f<sub>μ</sub> mit f<sub>μ</sub> = 0,75 (Gummimatte 1,0)</td><td>μ<sub>D</sub> direkt</td></tr>
           <tr><td><strong>Beschleunigung</strong></td><td colspan="2">gleich: 0,8 vorn · 0,5 hinten · 0,5 seitlich · 1,0 senkrecht</td></tr>
@@ -708,7 +708,7 @@ details.qacc .qc:last-child{border-bottom:0}
 <div class="mbar" id="mbar" hidden><button type="button" id="mbarBtn"><span class="mnum" id="mbarNum"></span><span class="mtxt"><b id="mbarT"></b><small id="mbarS"></small></span><span class="mgo">Details ↓</span></button></div>
 
 <footer class="foot">
-  <p>Zurrmittelrechner · Version 2.4 · © Fahrschulteam Lingen · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info</p>
+  <p>Zurrmittelrechner · Version 2.5 · © Fahrschulteam Lingen · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info</p>
   <p>Berechnung nach DIN EN 12195-1 oder VDI 2700 Blatt 2. Alle Angaben ohne Gewähr. Rechenhilfe, kein Ersatz für die Prüfung im Einzelfall.</p>
 </footer>
 
@@ -758,7 +758,7 @@ const LIMITS={m:[1,60000,'Masse zwischen 1 und 60.000 kg eingeben.'],P:[100,4000
   lc:[100,20000,'Zurrkraft zwischen 100 und 20.000 daN.'],alphaD:[0,89,'Winkel zwischen 0° und 89°.'],beta:[0,90,'Winkel zwischen 0° und 90°.'],
   cxf:[0,2,'Wert zwischen 0 und 2.'],cxb:[0,2,'Wert zwischen 0 und 2.'],cy:[0,2,'Wert zwischen 0 und 2.'],cz:[0.1,2,'Wert zwischen 0,1 und 2.'],fsf:[1,3,'Wert zwischen 1 und 3.'],fso:[1,3,'Wert zwischen 1 und 3.'],fmu:[0.5,1,'Wert zwischen 0,5 und 1.']};
 
-function read(){const o={};Object.keys(LIMITS).forEach(k=>o[k]=v(k));o.norm=norm;o.k=parseFloat($('k').value)||1.5;o.aufbau=$('aufbau').value;o.anl={vor:$('anlV').checked,hin:$('anlH').checked,seit:$('anlS').checked};if(norm==='vdi')o.fmu=1;return o;}
+function read(){const o={};Object.keys(LIMITS).forEach(k=>o[k]=v(k));o.norm=norm;o.k=2;o.aufbau=$('aufbau').value;o.anl={vor:$('anlV').checked,hin:$('anlH').checked,seit:$('anlS').checked};if(norm==='vdi')o.fmu=1;return o;}
 function validate(){
   let need=mode==='nieder'?['m','H','B','L','mu','stf','alpha','cxf','cxb','cy','cz','fsf','fso']:['m','mu','lc','alphaD','beta','cxf','cxb','cy','cz','fmu'];
   if(norm==='vdi')need=need.filter(k=>!['fsf','fso','fmu'].includes(k));
@@ -908,9 +908,9 @@ function svgK(p){
       <p><span class="kdot" style="background:var(--accent)"></span><strong>S<sub>TF</sub></strong> zieht auf beiden Seiten schräg nach unten am Gurt: hier ${nf0(p.stf)} daN je Seite.</p>
       <p><span class="kdot" style="background:var(--blue)"></span><strong>Senkrechter Anteil</strong> drückt die Ladung auf die Fläche: S<sub>TF</sub> · sin α = ${nf0(p.stf)} daN · ${nf(sa,3)} = <strong>${nf(sv,0)} daN</strong> je Seite.</p>
       <p><span class="kdot" style="background:var(--muted)"></span><strong>Waagerechter Anteil</strong> S<sub>TF</sub> · cos α zieht links und rechts gleich stark nach außen und hebt sich auf.</p>
-      ${p.norm==='vdi'?`<p class="ksum">Anpresskraft nach VDI 2700 = <b>k · S<sub>TF</sub> · sin α</b> = ${nf(p.k,1)} · ${nf0(p.stf)} daN · ${nf(sa,3)} = <b>${nf(p.k*sv,0)} daN</b></p>`:`<p class="ksum">Anpresskraft gesamt = S<sub>TF</sub> · sin α + S<sub>TF</sub> · sin α = <b>2 · S<sub>TF</sub> · sin α</b> = <b>${nf(2*sv,0)} daN</b></p>`}
+      ${p.norm==='vdi'?`<p class="ksum">Anpresskraft nach VDI 2700 = <b>2 · S<sub>TF</sub> · sin α</b> = 2 · ${nf0(p.stf)} daN · ${nf(sa,3)} = <b>${nf(p.k*sv,0)} daN</b></p>`:`<p class="ksum">Anpresskraft gesamt = S<sub>TF</sub> · sin α + S<sub>TF</sub> · sin α = <b>2 · S<sub>TF</sub> · sin α</b> = <b>${nf(2*sv,0)} daN</b></p>`}
     </div>
-    <figcaption class="hint">Zeichnung schematisch mit 62°, gerechnet wird mit α = ${nf0(p.alpha)}°. ${p.norm==='vdi'?'Die VDI 2700 rechnet mit dem k-Faktor: 1,5 bei einseitigem Spannen, weil auf der Gegenseite durch Kantenreibung nur etwa die halbe Kraft ankommt, und 2,0 bei beidseitigem Spannen. ':''}Die DIN EN 12195-1 nimmt an, dass auf beiden Seiten die volle Vorspannkraft ankommt, deshalb der Faktor 2. Ältere Regelwerke (VDI 2700, EN 12195-1:2004) rechneten bei einer Ratsche mit dem k-Faktor 1,5, weil auf der Gegenseite durch Reibung an den Kanten nur etwa die halbe Kraft ankommt.</figcaption>
+    <figcaption class="hint">Zeichnung schematisch mit 62°, gerechnet wird mit α = ${nf0(p.alpha)}°. Die DIN EN 12195-1 nimmt an, dass auf beiden Seiten die volle Vorspannkraft ankommt, deshalb der Faktor 2. Ältere Ausgaben der Regelwerke rechneten bei einer Ratsche mit dem k-Faktor 1,5, weil auf der Gegenseite durch Reibung an den Kanten nur etwa die halbe Kraft ankommt.</figcaption>
   </figure>`;
 }
 function svgK2(lat){
@@ -943,7 +943,7 @@ function stepFG(p,FG){
 function stepsNieder(p,r){
   let s=stepFG(p,r.FG);
   s+=`<li class="step"><div><h4>Werte für die Richtung „${r.name}“ festlegen</h4>
-    ${p.norm==='vdi'?`<p>Die VDI 2700 legt den Beschleunigungsbeiwert fest. Sie rechnet mit dem Gleitreibbeiwert μ<sub>D</sub> und dem k-Faktor, einen Sicherheitsbeiwert gibt es nicht.</p>
+    ${p.norm==='vdi'?`<p>Die VDI 2700 legt den Beschleunigungsbeiwert fest. Sie rechnet mit dem Gleitreibbeiwert μ<sub>D</sub>, einen Sicherheitsbeiwert gibt es nicht.</p>
     <div class="math">${r.cs} = ${nf(r.c)}<span class="gap"></span>c<sub>z</sub> = ${nf(p.cz)}<span class="gap"></span>μ<sub>D</sub> = ${nf(p.mu)}<span class="gap"></span>k = ${nf(p.k,1)}<span class="gap"></span>sin α = sin ${nf0(p.alpha)}° = ${nf(r.sa,3)}</div>`:`<p>Die Norm legt fest, mit welchem Anteil der Gewichtskraft die Ladung im Fahrbetrieb geschoben wird (Beschleunigungsbeiwert) und welcher Sicherheitsbeiwert gilt.</p>
     <div class="math">${r.cs} = ${nf(r.c)}<span class="gap"></span>c<sub>z</sub> = ${nf(p.cz)}<span class="gap"></span>μ = ${nf(p.mu)}<span class="gap"></span>f<sub>s</sub> = ${nf(r.fs)}<span class="gap"></span>sin α = sin ${nf0(p.alpha)}° = ${nf(r.sa,3)}</div>`}</div></li>`;
   s+=`<li class="step"><div><h4>Prüfen: Reicht die Reibung allein?</h4>
@@ -957,14 +957,14 @@ function stepsNieder(p,r){
       <div class="math">F<sub>S</sub> = (${r.cs} − ${MUs} · c<sub>z</sub>) · F<sub>G</sub>${V?'':' · f<sub>s</sub>'} = ${nf(r.drive)} · ${nf(r.FG,1)} daN${V?'':' · '+nf(r.fs)} = <b>${nf0(r.Freq)} daN</b></div></div></li>`+blockStep(p,r);
     if(r.Frest>0){
       s+=`<li class="step"><div><h4>Anzahl Zurrmittel für die Restkraft</h4>
-        <p>Jeder Gurt erzeugt die Anpresskraft ${V?'k':'2'} · S<sub>TF</sub> · sin α. Die Reibung daraus hält die Restkraft.</p>${svgK(p)}
-        <div class="math">n = ${frac(`F<sub>Rest</sub>`,`${V?'k':'2'} · ${MUs} · sin α · S<sub>TF</sub>`)} = ${frac(`${nf0(r.Frest)} daN`,`${nf(r.K,1)} · ${nf(p.mu)} · ${nf(r.sa,3)} · ${nf0(p.stf)} daN`)} = <b>${nf(r.nR)}</b></div>
+        <p>Jeder Gurt erzeugt die Anpresskraft 2 · S<sub>TF</sub> · sin α. Die Reibung daraus hält die Restkraft.</p>${svgK(p)}
+        <div class="math">n = ${frac(`F<sub>Rest</sub>`,`2 · ${MUs} · sin α · S<sub>TF</sub>`)} = ${frac(`${nf0(r.Frest)} daN`,`${nf(r.K,1)} · ${nf(p.mu)} · ${nf(r.sa,3)} · ${nf0(p.stf)} daN`)} = <b>${nf(r.nR)}</b></div>
         <p>Aufgerundet: <strong>${Math.ceil(r.nR-1e-9)} Zurrmittel</strong>.</p></div></li>`;
     }
   } else if(r.drive>0){
     s+=`<li class="step"><div>${p.norm==='vdi'?`<h4>Anzahl Zurrmittel gegen Rutschen (VDI 2700)</h4>
-      <p>Beim Niederzurren drückt der Gurt die Ladung auf die Ladefläche und erhöht so die Reibung. Der k-Faktor gibt an, wie viel Vorspannkraft insgesamt ankommt: 1,5 bei einseitigem Spannen, 2,0 bei beidseitigem.</p>${svgK(p)}
-      <div class="math">n = ${frac(`(${r.cs} − μ<sub>D</sub> · c<sub>z</sub>) · F<sub>G</sub>`,`k · μ<sub>D</sub> · sin α · S<sub>TF</sub>`)}</div>
+      <p>Beim Niederzurren drückt der Gurt die Ladung auf die Ladefläche und erhöht so die Reibung. Die Zahl 2 steht dafür, dass die Vorspannkraft auf beiden Seiten der Ladung wirkt.</p>${svgK(p)}
+      <div class="math">n = ${frac(`(${r.cs} − μ<sub>D</sub> · c<sub>z</sub>) · F<sub>G</sub>`,`2 · μ<sub>D</sub> · sin α · S<sub>TF</sub>`)}</div>
       <div class="math">n = ${frac(`${nf(r.drive)} · ${nf(r.FG,1)} daN`,`${nf(p.k,1)} · ${nf(p.mu)} · ${nf(r.sa,3)} · ${nf0(p.stf)} daN`)} = ${frac(nf(r.drive*r.FG,1),nf(p.k*p.mu*r.sa*p.stf,1))} = <b>${nf(r.nR)}</b></div>`:`<h4>Anzahl Zurrmittel gegen Rutschen (Formel 10)</h4>
       <p>Beim Niederzurren drückt der Gurt die Ladung auf die Ladefläche und erhöht so die Reibung. Die Zahl 2 steht dafür, dass die Vorspannkraft auf beiden Seiten der Ladung wirkt.</p>${svgK(p)}
       <div class="math">n = ${frac(`(${r.cs} − μ · c<sub>z</sub>) · F<sub>G</sub>`,`2 · μ · sin α · S<sub>TF</sub>`)} · f<sub>s</sub></div>
@@ -1127,7 +1127,7 @@ function render(){
       ${tgov.nRc===0&&nk===0?`<span class="chip">Reibung allein reicht rechnerisch</span>`:''}</div></div>`;
     const sa=Math.sin(rad(p.alpha));
     $('kpis').innerHTML=kpi('Gewichtskraft F<sub>G</sub>',nf0(FG),'daN',`${nf0(p.m)} kg · 9,81 m/s²`)+
-      kpi('Anpresskraft je Gurt',nf0((norm==='vdi'?p.k:2)*p.stf*sa),'daN',norm==='vdi'?`k · S<sub>TF</sub> · sin α (k = ${nf(p.k,1)})`:'2 · S<sub>TF</sub> · sin α')+
+      kpi('Anpresskraft je Gurt',nf0((norm==='vdi'?p.k:2)*p.stf*sa),'daN','2 · S<sub>TF</sub> · sin α')+
       kpi('Rutschen',tgov.nRc,tgov.nRc===1?'Gurt':'Gurte',`maßgebend ${tgov.name}`)+
       kpi('Kippen zur Seite',nk,nk===1?'Gurt':'Gurte',sd.kStatus==='rechnen'?'kippgefährdet':'standsicher');
     // Übersicht: Balken
@@ -1135,7 +1135,7 @@ function render(){
     const scale=Math.max(Math.ceil(max),1);
     $('pUebersicht').innerHTML=`<h2 class="h">Rutschen nach Richtung</h2><p class="lead">Errechnete Anzahl Zurrgurte je Richtung. Angefangene Gurte werden aufgerundet, der größte Wert ist maßgebend.</p>
       <div class="bars">${rows.map(r=>{const w=Math.min(100,r.nR/scale*100);
-        return `<div class="bar"><div class="lbl">${r.name}<small>c = ${nf(r.c)}${norm==='vdi'?' · k = '+nf(p.k,1):' · f<sub>s</sub> = '+nf(r.fs)}${r.bc>0?' · Wand '+nf0(r.bc)+' daN':''}</small></div>
+        return `<div class="bar"><div class="lbl">${r.name}<small>c = ${nf(r.c)}${norm==='vdi'?'':' · f<sub>s</sub> = '+nf(r.fs)}${r.bc>0?' · Wand '+nf0(r.bc)+' daN':''}</small></div>
         <div class="track">${Array.from({length:scale-1},(_,i)=>`<span class="tick" style="left:${(i+1)/scale*100}%"></span>`).join('')}<span class="fill ${r.k===tgov.k?'gov':''}" style="width:${w}%"></span></div>
         <div class="val"><b>${r.nRc}</b> ${r.nRc===1?'Gurt':'Gurte'}<small>errechnet ${nf(r.nR)}</small></div></div>`;}).join('')}</div>
       <div class="legend"><span><i style="background:var(--accent)"></i>maßgebende Richtung</span><span><i style="background:var(--blue)"></i>weitere Richtungen</span><span>Teilstriche = ganze Gurte</span></div>`;
@@ -1184,7 +1184,7 @@ function kpi(k,val,unit,d){return `<div class="card kpi"><span class="k">${k}</s
 function printTable(p){
   const mt=FRL.find(x=>x.id===$('muSel').value);
   const rowsP=[['Berechnungsgrundlage',norm==='vdi'?'VDI 2700 Blatt 2 (klassisches Modell)':'DIN EN 12195-1:2021-01'],['Verfahren',mode==='nieder'?'Niederzurren':'Diagonalzurren (4 Zurrmittel)'],['Masse',nf0(p.m)+' kg'],
-    ...(mode==='nieder'?[['Maße L × B × H',`${nf(p.L)} × ${nf(p.B)} × ${nf(p.H)} m`],['Vorspannkraft S<sub>TF</sub> / Winkel α',`${nf0(p.stf)} daN / ${nf0(p.alpha)}°`+(norm==='vdi'?` / k = ${nf(p.k,1)}`:'')]]:[['Zurrkraft LC / α / β',`${nf0(p.lc)} daN / ${nf0(p.alphaD)}° / ${nf0(p.beta)}°`]]),
+    ...(mode==='nieder'?[['Maße L × B × H',`${nf(p.L)} × ${nf(p.B)} × ${nf(p.H)} m`],['Vorspannkraft S<sub>TF</sub> / Winkel α',`${nf0(p.stf)} daN / ${nf0(p.alpha)}°`]]:[['Zurrkraft LC / α / β',`${nf0(p.lc)} daN / ${nf0(p.alphaD)}° / ${nf0(p.beta)}°`]]),
     ...(p.aufbau!=='none'?[['Formschluss',`Aufbau Code ${p.aufbau}, Nutzlast ${nf0(p.P)} kg, anliegend: `+(['vor','hin','seit'].filter(k=>p.anl[k]).map(k=>WALL[k]).join(', ')||'keine Wand')]]:[]),
     ['Reibung',(mt?`${mt.g} – ${mt.t}`:'eigener Wert')+`, μ = ${nf(p.mu)}`]];
   $('pTable').innerHTML=rowsP.map(([a,b])=>`<tr><td>${a}</td><td><strong>${b}</strong></td></tr>`).join('');
@@ -1235,7 +1235,7 @@ $('aufbau').addEventListener('change',()=>{updBlk();if(curView==='schnell')qBuil
 $('P').addEventListener('input',updBlk);
 function updVis(){updBlk();const N=mode==='nieder',V=norm==='vdi';
   document.querySelector('.field[data-f="fsf"]').hidden=!N||V;document.querySelector('.field[data-f="fso"]').hidden=!N||V;
-  document.querySelector('.field[data-f="fmu"]').hidden=N||V;$('kField').hidden=!(N&&V);$('vdiBwNote').hidden=!V;}
+  document.querySelector('.field[data-f="fmu"]').hidden=N||V;$('kField').hidden=true;$('vdiBwNote').hidden=!V;}
 
 /* ---------- Modus ---------- */
 function setMode(m){mode=m;dirTab=null;
@@ -1326,7 +1326,7 @@ function showSolution(i){const t=TASKS[i];
 /* ---------- Wissen ---------- */
 $('gloss').innerHTML=[['m','Masse der Ladung in kg'],['F<sub>G</sub>','Gewichtskraft in daN (m · g / 10)'],['g','Erdbeschleunigung 9,81 m/s²'],
   ['c<sub>x</sub>','Beschleunigungsbeiwert längs (0,8 vorn, 0,5 hinten)'],['c<sub>y</sub>','Beschleunigungsbeiwert quer (0,5)'],['c<sub>z</sub>','Beschleunigungsbeiwert senkrecht (1,0)'],
-  ['μ','Reibbeiwert zwischen Ladung und Ladefläche (DIN)'],['μ<sub>D</sub>','Gleitreibbeiwert (VDI 2700)'],['k','k-Faktor VDI 2700: 1,5 einseitig, 2,0 beidseitig gespannt'],['S<sub>TF</sub>','normale Vorspannkraft des Zurrgurts (Etikett)'],['LC','Zurrkraft des Zurrmittels (Etikett)'],
+  ['μ','Reibbeiwert zwischen Ladung und Ladefläche (DIN)'],['μ<sub>D</sub>','Gleitreibbeiwert (VDI 2700)'],['S<sub>TF</sub>','normale Vorspannkraft des Zurrgurts (Etikett)'],['LC','Zurrkraft des Zurrmittels (Etikett)'],
   ['α','Winkel zwischen Zurrmittel und Ladefläche'],['β','Winkel zur Längsachse, von oben gesehen'],['f<sub>s</sub>','Sicherheitsbeiwert Niederzurren (1,25 / 1,1)'],
   ['f<sub>μ</sub>','Umrechnungsfaktor Reibung beim Direktzurren (0,75; Gummimatte 1,0)'],['2 (früher k)','Gurtkraft wirkt auf beiden Seiten der Ladung'],
   ['n','Anzahl der Zurrmittel'],['P','Nutzlast des Fahrzeugs (DIN EN 12642)'],['BC','Blockierkraft der Wand'],['F<sub>S</sub>, F<sub>Rest</sub>','nötige und verbleibende Sicherungskraft'],['d, b','Schwerpunkthöhe und Abstand zur Kippkante']].map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('');
@@ -1400,7 +1400,7 @@ function qBwDefs(){const o=[{id:'cxf',l:'c<sub>x</sub> nach vorn',u:'',min:0,max
   return o;}
 function qItem(d){
   if(d.bw){return qBwDefs().map(qNum).join('')+`<div class="qc"><button type="button" class="btn" id="qNorm" style="justify-content:center">↺ Normwerte wiederherstellen</button><p class="hint" style="margin:0">${norm==='vdi'?'VDI 2700: keine Sicherheitsbeiwerte, Gleitreibbeiwert μ<sub>D</sub>.':'Normwerte: c<sub>x</sub> 0,8 / 0,5 · c<sub>y</sub> 0,5 · c<sub>z</sub> 1,0 · '+(mode==='nieder'?'f<sub>s</sub> 1,25 / 1,1':'f<sub>μ</sub> 0,75 (Gummimatte 1,0)')}</p></div>`;}
-  if(d.k){return norm==='vdi'?`<div class="qc"><div class="qc-top"><label>Spannen (k-Faktor)<small>VDI 2700</small></label></div><div class="qc-chips"><button type="button" data-k="1.5">einseitig · 1,5</button><button type="button" data-k="2">beidseitig · 2,0</button></div></div>`:'';}
+  if(d.k){return '';return norm==='vdi'?`<div class="qc"><div class="qc-top"><label>Spannen (k-Faktor)<small>VDI 2700</small></label></div><div class="qc-chips"><button type="button" data-k="1.5">einseitig · 1,5</button><button type="button" data-k="2">beidseitig · 2,0</button></div></div>`:'';}
   if(d.blk){const a=$('aufbau').value;let h=`<div class="qc"><div class="qc-top"><label>Aufbau<small>nach DIN EN 12642</small></label></div>
       <div class="qc-chips" id="qAufbau"><button type="button" data-a="none">ohne</button><button type="button" data-a="L">Code L</button><button type="button" data-a="XL">Code XL</button></div></div>`;
     if(a!=='none'){h+=`<div class="qc"><div class="qc-top"><label>Ladung liegt an<small>Mehrfachauswahl möglich</small></label></div>
