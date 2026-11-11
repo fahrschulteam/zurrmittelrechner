@@ -334,6 +334,39 @@ input[type=range]{width:100%;accent-color:var(--accent);height:30px;margin:0;cur
 .qc-chips{display:flex;gap:6px}
 .qc-chips button{flex:1;border:1px solid var(--line-2);background:var(--panel);border-radius:8px;padding:9px;font-weight:600;cursor:pointer}
 .qc-chips button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.q-viz{padding:10px 14px 6px}
+.q-viz-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.q-viz-h b{font-family:var(--f-display);font-size:1.05rem}
+.q-viz-h span{font-size:.82rem;color:var(--muted);text-align:right}
+.qstep{display:flex;align-items:center;gap:4px;flex:none}
+.qstep .qv{width:104px}
+.qsb{width:36px;height:38px;border-radius:8px;border:1px solid var(--line-2);background:var(--panel);font-size:1.25rem;font-weight:700;line-height:1;cursor:pointer;color:var(--ink);display:grid;place-items:center;padding:0}
+.qsb:hover{border-color:var(--accent);color:var(--accent)}
+.qsb:active{transform:scale(.94)}
+.qpre{display:flex;flex-wrap:wrap;gap:6px}
+.qpre button{border:1px solid var(--line-2);background:var(--panel);border-radius:99px;padding:5px 11px;font-size:.82rem;font-weight:600;cursor:pointer;color:var(--muted)}
+.qpre button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.q-ctrl input[type=range]{-webkit-appearance:none;appearance:none;height:30px;background:transparent;--p:50%}
+.q-ctrl input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--accent) var(--p),var(--line) var(--p))}
+.q-ctrl input[type=range]::-moz-range-track{height:8px;border-radius:99px;background:var(--line)}
+.q-ctrl input[type=range]::-moz-range-progress{height:8px;border-radius:99px;background:var(--accent)}
+.q-ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-9px;border-radius:50%;background:#fff;border:3px solid var(--accent);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.q-ctrl input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--accent);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+details.qacc{border-top:1px solid var(--line)}
+details.qacc:first-child{border-top:0}
+details.qacc summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0}
+details.qacc summary::-webkit-details-marker{display:none}
+details.qacc summary span{display:grid;line-height:1.25}
+details.qacc summary b{font-family:var(--f-display);font-size:1.05rem}
+details.qacc summary small{color:var(--muted);font-size:.84rem}
+details.qacc summary .chev{transition:transform .15s;color:var(--muted)}
+details.qacc[open] summary .chev{transform:rotate(180deg)}
+details.qacc .qc:last-child{border-bottom:0}
+.q-ctrl>.qc+details.qacc,.q-ctrl>details.qacc+details.qacc{border-top:1px solid var(--line)}
+@media (max-width:560px){.qc-top{flex-wrap:wrap;gap:8px}.qc-top label{flex:1 1 100%}.qstep{flex:1 1 100%}.qstep .qv{flex:1;width:auto}.qsb{width:52px;height:44px}.qv input{padding:10px 4px 10px 10px}}
+.qpre button{flex:1 1 0;white-space:nowrap;min-width:0}
+.q-reset{display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:transparent;color:var(--muted);font-weight:600;padding:8px;cursor:pointer;border-radius:8px}
+.q-reset:hover{color:var(--accent);background:var(--panel-2)}
 .qc-grp{font-family:var(--f-display);font-weight:700;font-size:.95rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;padding-top:14px}
 .q-formel{flex:none;display:grid;justify-items:center;gap:3px;border:0;border-radius:10px;background:var(--accent);color:#fff;padding:9px 10px;font-weight:700;font-size:.74rem;line-height:1.15;text-align:center;cursor:pointer;min-width:74px}
 .q-formel:hover{background:var(--accent-ink)}
@@ -529,7 +562,9 @@ input[type=range]{width:100%;accent-color:var(--accent);height:30px;margin:0;cur
       <div class="seg seg-sm" role="group" aria-label="Norm"><button type="button" id="qDin">DIN EN 12195-1</button><button type="button" id="qVdi">VDI 2700</button></div>
       <div class="seg seg-sm" role="group" aria-label="Zurrverfahren"><button type="button" id="qN">Niederzurren</button><button type="button" id="qD">Diagonalzurren</button></div>
     </div>
+    <div class="card q-viz" aria-live="polite"><div class="q-viz-h"><b>Ladeplan</b><span id="qVizCap">Draufsicht</span></div><div id="qViz"></div></div>
     <div class="card q-ctrl" id="qCtrl"></div>
+    <button type="button" class="q-reset" id="qReset"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Alle Werte zurücksetzen</button>
     <div class="q-res" id="qRes" aria-live="polite"><div class="q-res-in" id="qResIn"></div>
       <button type="button" class="q-formel" id="qFormel" aria-label="Formel und Lösung anzeigen"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5M8 17h3"/></svg><span>Formel &amp;<br>Lösung</span></button></div>
     <p class="hint q-foot">Beiwerte nach Norm fest eingestellt. Alle Einstellungen und Grafiken findest du im Bereich „Rechner“.</p>
@@ -620,6 +655,7 @@ input[type=range]{width:100%;accent-color:var(--accent);height:30px;margin:0;cur
 const $=id=>document.getElementById(id);
 const G=9.81;
 let QS={cls:'',num:'',ttl:'',line:'',warn:''};
+let LAST=null;
 let curView='rechner', mode='nieder', norm='din', dirTab=null, rtab='uebersicht', curTask=null, heroVis=false;
 const nf=(x,d=2)=>Number.isFinite(x)?x.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d}):'–';
 const nf0=x=>Number.isFinite(x)?Math.round(x).toLocaleString('de-DE'):'–';
@@ -955,7 +991,7 @@ function render(){
   checkNorm();
   if(!valid){
     $('hero').className='card hero bad';
-    QS={cls:'bad',num:'!',ttl:'Eingaben prüfen',line:'Ein Wert liegt außerhalb des Bereichs.',warn:''};
+    LAST=null;QS={cls:'bad',num:'!',ttl:'Eingaben prüfen',line:'Ein Wert liegt außerhalb des Bereichs.',warn:''};
     $('hero').innerHTML=`<div class="num">!</div><div><p class="ttl">Bitte Eingaben prüfen</p><p class="sub">Mindestens ein Wert liegt außerhalb des zulässigen Bereichs. Die betroffenen Felder sind links rot markiert.</p></div>`;
     $('kpis').innerHTML='';$('pUebersicht').innerHTML='';$('steps').innerHTML='';$('pKippen').innerHTML='';$('dirpills').innerHTML='';
     updMbar();qRender();return;
@@ -966,6 +1002,7 @@ function render(){
   if(mode==='nieder'){rows.forEach(r=>r.nRc=Math.ceil(r.nR-1e-9));gov=rows.reduce((a,b)=>b.need>a.need?b:a,rows[0]);tgov=rows.reduce((a,b)=>b.nR>a.nR?b:a,rows[0]);}
   else{gov=rows.reduce((a,b)=>b.LCreq>a.LCreq?b:a,rows[0]);tgov=gov;}
   if(!dirTab||!rows.find(r=>r.k===dirTab))dirTab=tgov.k;
+  LAST={p,rows,gov,tgov};
   const FG=rows[0].FG;
 
   if(mode==='nieder'){
@@ -1227,70 +1264,134 @@ window.addEventListener('beforeprint',()=>document.querySelectorAll('.rpane').fo
 
 /* ---------- Schnell-Ansicht ---------- */
 const QDEF={
-  nieder:[{id:'m',l:'Masse der Ladung',u:'kg',min:100,max:12000,step:50},
+  nieder:[{id:'m',l:'Masse der Ladung',u:'kg',min:100,max:12000,step:10,bs:100,pre:[500,1000,2000,5000]},
     {mu:1},
-    {id:'stf',l:'Vorspannkraft S<sub>TF</sub>',s:'steht auf dem Gurt-Etikett',u:'daN',min:100,max:1000,step:10},
-    {id:'alpha',l:'Zurrwinkel α',s:'Gurt zur Ladefläche',u:'°',min:20,max:90,step:1},
+    {id:'stf',l:'Vorspannkraft S<sub>TF</sub>',s:'steht auf dem Gurt-Etikett',u:'daN',min:100,max:1000,step:10,bs:10,pre:[250,350,500]},
+    {id:'alpha',l:'Zurrwinkel α',s:'Gurt zur Ladefläche',u:'°',min:20,max:90,step:1,bs:5,pre:[45,60,75,90]},
     {k:1},
-    {blk:1},
-    {grp:'Maße für die Kipp-Prüfung'},
-    {id:'H',l:'Höhe',u:'m',min:0.2,max:4,step:0.05},
-    {id:'B',l:'Breite',u:'m',min:0.2,max:2.5,step:0.05},
-    {id:'L',l:'Länge',u:'m',min:0.2,max:12,step:0.05}],
-  direkt:[{id:'m',l:'Masse der Ladung',u:'kg',min:100,max:30000,step:100},
+    {acc:'blk',t:'Formschluss an Wänden',items:[{blk:1}]},
+    {acc:'dims',t:'Maße für die Kipp-Prüfung',items:[
+      {id:'H',l:'Höhe',u:'m',min:0.2,max:4,step:0.05,bs:0.1},
+      {id:'B',l:'Breite',u:'m',min:0.2,max:2.5,step:0.05,bs:0.1},
+      {id:'L',l:'Länge',u:'m',min:0.2,max:12,step:0.05,bs:0.1}]}],
+  direkt:[{id:'m',l:'Masse der Ladung',u:'kg',min:100,max:30000,step:50,bs:100,pre:[1000,2500,5000,10000]},
     {mu:1},
-    {id:'lc',l:'Zurrkraft LC',s:'je Zurrmittel, Etikett',u:'daN',min:500,max:10000,step:50},
-    {id:'alphaD',l:'Vertikalwinkel α',s:'Zurrmittel zur Ladefläche',u:'°',min:5,max:85,step:1},
-    {id:'beta',l:'Horizontalwinkel β',s:'zur Längsachse, von oben',u:'°',min:5,max:85,step:1},
-    {blk:1}]
+    {id:'lc',l:'Zurrkraft LC',s:'je Zurrmittel, Etikett',u:'daN',min:500,max:10000,step:50,bs:100,pre:[1600,2000,2500,5000]},
+    {id:'alphaD',l:'Vertikalwinkel α',s:'Zurrmittel zur Ladefläche',u:'°',min:5,max:85,step:1,bs:5,pre:[30,45,60]},
+    {id:'beta',l:'Horizontalwinkel β',s:'zur Längsachse, von oben',u:'°',min:5,max:85,step:1,bs:5,pre:[30,45,60]},
+    {acc:'blk',t:'Formschluss an Wänden',items:[{blk:1}]}]
 };
+const QOPEN=new Set();
 const fmtQ=(x,st)=>{const d=st<0.01?3:st<0.1?2:st<1?2:0;return Number(x).toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:d});};
-function qBuild(){
-  const defs=QDEF[mode];let h='';
-  defs.forEach(d=>{
-    if(d.grp){h+=`<div class="qc-grp">${d.grp}</div>`;return;}
-    if(d.blk){const a=$('aufbau').value;
-      h+=`<div class="qc-grp">Formschluss an Wänden</div><div class="qc"><div class="qc-top"><label>Aufbau<small>nach DIN EN 12642</small></label></div>
-        <div class="qc-chips" id="qAufbau"><button type="button" data-a="none">ohne</button><button type="button" data-a="L">Code L</button><button type="button" data-a="XL">Code XL</button></div></div>`;
-      if(a!=='none'){
-        h+=`<div class="qc"><div class="qc-top"><label>Ladung liegt an<small>Mehrfachauswahl möglich</small></label></div>
-          <div class="qc-chips multi" id="qAnl"><button type="button" data-c="anlV">Stirnwand</button><button type="button" data-c="anlH">Rückwand</button><button type="button" data-c="anlS">Seitenwand</button></div></div>
-          <div class="qc"><div class="qc-top"><label for="q_P">Nutzlast des Fahrzeugs P<small>aus Fahrzeugschein</small></label><div class="qv"><input id="q_P" type="number" inputmode="decimal" step="100"><span>kg</span></div></div>
-          <input type="range" id="qr_P" min="1000" max="30000" step="100" aria-label="Nutzlast"><div class="qc-scale"><span>1.000 kg</span><span>30.000 kg</span></div></div>`;}
-      return;}
-    if(d.k){if(norm==='vdi')h+=`<div class="qc"><div class="qc-top"><label>Spannen (k-Faktor)<small>VDI 2700</small></label></div><div class="qc-chips"><button type="button" data-k="1.5">einseitig · 1,5</button><button type="button" data-k="2">beidseitig · 2,0</button></div></div>`;return;}
-    if(d.mu){h+=`<div class="qc"><div class="qc-top"><label for="q_mu">${norm==='vdi'?'Gleitreibbeiwert μ<sub>D</sub>':'Reibbeiwert μ'}<small>Ladegut auf Ladefläche</small></label><div class="qv"><input id="q_mu" type="number" inputmode="decimal" step="0.01"></div></div>
+const qFlat=()=>{const o=[];QDEF[mode].forEach(d=>{if(d.acc)d.items.forEach(i=>o.push(i));else o.push(d);});return o;};
+function qItem(d){
+  if(d.k){return norm==='vdi'?`<div class="qc"><div class="qc-top"><label>Spannen (k-Faktor)<small>VDI 2700</small></label></div><div class="qc-chips"><button type="button" data-k="1.5">einseitig · 1,5</button><button type="button" data-k="2">beidseitig · 2,0</button></div></div>`:'';}
+  if(d.blk){const a=$('aufbau').value;let h=`<div class="qc"><div class="qc-top"><label>Aufbau<small>nach DIN EN 12642</small></label></div>
+      <div class="qc-chips" id="qAufbau"><button type="button" data-a="none">ohne</button><button type="button" data-a="L">Code L</button><button type="button" data-a="XL">Code XL</button></div></div>`;
+    if(a!=='none'){h+=`<div class="qc"><div class="qc-top"><label>Ladung liegt an<small>Mehrfachauswahl möglich</small></label></div>
+      <div class="qc-chips multi" id="qAnl"><button type="button" data-c="anlV">Stirnwand</button><button type="button" data-c="anlH">Rückwand</button><button type="button" data-c="anlS">Seitenwand</button></div></div>`+
+      qNum({id:'P',l:'Nutzlast des Fahrzeugs P',s:'aus Fahrzeugschein',u:'kg',min:1000,max:30000,step:100,bs:500,pre:[3500,12000,24000]});}
+    return h;}
+  if(d.mu){return `<div class="qc"><div class="qc-top"><label for="q_mu">${norm==='vdi'?'Gleitreibbeiwert μ<sub>D</sub>':'Reibbeiwert μ'}<small>Ladegut auf Ladefläche</small></label>${qStep({id:'mu',u:'',step:0.01,bs:0.05})}</div>
       <select id="q_muSel" aria-label="Ladegut auf Ladefläche">${$('muSel').innerHTML}</select>
-      <input type="range" id="qr_mu" min="0.1" max="0.8" step="0.01" aria-label="Reibbeiwert"><div class="qc-scale"><span>0,1 glatt</span><span>0,8 rau</span></div></div>`;return;}
-    h+=`<div class="qc"><div class="qc-top"><label for="q_${d.id}">${d.l}${d.s?`<small>${d.s}</small>`:''}</label><div class="qv"><input id="q_${d.id}" type="number" inputmode="decimal" step="${d.step}"><span>${d.u}</span></div></div>
-      <input type="range" id="qr_${d.id}" min="${d.min}" max="${d.max}" step="${d.step}" aria-label="${d.l.replace(/<[^>]+>/g,'')}"><div class="qc-scale"><span>${fmtQ(d.min,d.step)} ${d.u}</span><span>${fmtQ(d.max,d.step)} ${d.u}</span></div></div>`;
+      <input type="range" id="qr_mu" min="0.1" max="0.8" step="0.01" aria-label="Reibbeiwert"><div class="qc-scale"><span>0,1 glatt</span><span>0,8 rau</span></div></div>`;}
+  return qNum(d);
+}
+function qStep(d){return `<div class="qstep"><button type="button" class="qsb" data-s="${d.id}" data-d="-${d.bs}" aria-label="${d.id} verringern">−</button><div class="qv"><input id="q_${d.id}" type="number" inputmode="decimal" step="${d.step}">${d.u?`<span>${d.u}</span>`:''}</div><button type="button" class="qsb" data-s="${d.id}" data-d="${d.bs}" aria-label="${d.id} erhöhen">+</button></div>`;}
+function qNum(d){
+  return `<div class="qc"><div class="qc-top"><label for="q_${d.id}">${d.l}${d.s?`<small>${d.s}</small>`:''}</label>${qStep(d)}</div>
+    <input type="range" id="qr_${d.id}" min="${d.min}" max="${d.max}" step="${d.step}" aria-label="${d.l.replace(/<[^>]+>/g,'')}">
+    ${d.pre?`<div class="qpre">${d.pre.map(x=>`<button type="button" data-p="${d.id}" data-v="${x}">${fmtQ(x,d.step)} ${d.u}</button>`).join('')}</div>`:`<div class="qc-scale"><span>${fmtQ(d.min,d.step)} ${d.u}</span><span>${fmtQ(d.max,d.step)} ${d.u}</span></div>`}</div>`;
+}
+function qAccSum(key){
+  if(key==='dims')return `${nf(v('L'))} × ${nf(v('B'))} × ${nf(v('H'))} m`;
+  const a=$('aufbau').value;if(a==='none')return 'ohne';
+  const w=[['anlV','Stirnwand'],['anlH','Rückwand'],['anlS','Seitenwand']].filter(x=>$(x[0]).checked).map(x=>x[1]);
+  return `Code ${a}${w.length?' · '+w.join(', '):' · nicht anliegend'}`;
+}
+function qBuild(){
+  let h='';
+  QDEF[mode].forEach(d=>{
+    if(d.acc){h+=`<details class="qacc" data-acc="${d.acc}" ${QOPEN.has(d.acc)?'open':''}><summary><span><b>${d.t}</b><small id="qs_${d.acc}">${qAccSum(d.acc)}</small></span><svg class="i chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>${d.items.map(qItem).join('')}</details>`;return;}
+    h+=qItem(d);
   });
   $('qCtrl').innerHTML=h;
-  const ids=defs.filter(d=>d.id).map(d=>d.id).concat(['mu']).concat($('aufbau').value!=='none'?['P']:[]);
+  $('qCtrl').querySelectorAll('details.qacc').forEach(dt=>dt.addEventListener('toggle',()=>{dt.open?QOPEN.add(dt.dataset.acc):QOPEN.delete(dt.dataset.acc);}));
+  const ids=qFlat().filter(d=>d.id).map(d=>d.id).concat(['mu']).concat($('aufbau').value!=='none'?['P']:[]);
+  const push=(id,val)=>{$(id).value=val;if(id==='mu'){const cur=FRL.find(x=>x.id===$('muSel').value);if(!cur||cur.mu!==Number(val))$('muSel').value='custom';muText();$('q_muSel').value=$('muSel').value;}if(id==='P')updBlk();render();qMark();};
   ids.forEach(id=>{
-    const num=$('q_'+id),rng=$('qr_'+id);
-    const push=(val)=>{$(id).value=val;if(id==='mu'){const cur=FRL.find(x=>x.id===$('muSel').value);if(!cur||cur.mu!==Number(val))$('muSel').value='custom';muText();$('q_muSel').value=$('muSel').value;}render();};
-    rng.addEventListener('input',()=>{num.value=rng.value;push(rng.value);});
-    num.addEventListener('input',()=>{const x=parseFloat(String(num.value).replace(',','.'));if(Number.isFinite(x)){rng.value=x;}push(num.value);});
+    const num=$('q_'+id),rng=$('qr_'+id);if(!num)return;
+    rng.addEventListener('input',()=>{num.value=rng.value;push(id,rng.value);});
+    num.addEventListener('input',()=>{const x=parseFloat(String(num.value).replace(',','.'));if(Number.isFinite(x))rng.value=x;push(id,num.value);});
   });
+  $('qCtrl').querySelectorAll('.qsb').forEach(b=>b.onclick=()=>{const id=b.dataset.s,rng=$('qr_'+id);const cur=parseFloat($(id).value)||0,d=parseFloat(b.dataset.d);
+    let nv=Math.round((cur+d)/Math.abs(d))*Math.abs(d);const lo=parseFloat(rng.min),hi=parseFloat(rng.max);nv=Math.min(Math.max(nv,lo),id==='m'||id==='P'?99999:hi);
+    nv=Math.round(nv*1000)/1000;$('q_'+id).value=nv;rng.value=nv;push(id,nv);});
+  $('qCtrl').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const id=b.dataset.p;$('q_'+id).value=b.dataset.v;$('qr_'+id).value=b.dataset.v;push(id,b.dataset.v);});
   $('q_muSel').onchange=e=>{applyMu(e.target.value);qSync();};
   $('qCtrl').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{$('aufbau').value=b.dataset.a;updBlk();render();qBuild();});
   $('qCtrl').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{$(b.dataset.c).checked=!$(b.dataset.c).checked;render();qSync();});
   $('qCtrl').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{$('k').value=b.dataset.k;render();qSync();});
   qSync();
 }
+function qMark(){
+  $('qCtrl').querySelectorAll('input[type=range]').forEach(r=>{const p=(parseFloat(r.value)-parseFloat(r.min))/(parseFloat(r.max)-parseFloat(r.min))*100;r.style.setProperty('--p',Math.min(100,Math.max(0,p))+'%');});
+  $('qCtrl').querySelectorAll('[data-p]').forEach(b=>b.setAttribute('aria-pressed',String(Math.abs(parseFloat($(b.dataset.p).value)-parseFloat(b.dataset.v))<1e-9)));
+  ['dims','blk'].forEach(k=>{const e=$('qs_'+k);if(e)e.textContent=qAccSum(k);});
+}
 function qSync(){
-  QDEF[mode].filter(d=>d.id).map(d=>d.id).concat(['mu','P']).forEach(id=>{const n=$('q_'+id),r=$('qr_'+id);if(!n)return;n.value=$(id).value;r.value=$(id).value;});
+  qFlat().filter(d=>d.id).map(d=>d.id).concat(['mu','P']).forEach(id=>{const n=$('q_'+id),r=$('qr_'+id);if(!n)return;n.value=$(id).value;r.value=$(id).value;});
   if($('q_muSel'))$('q_muSel').value=$('muSel').value;
   $('qCtrl').querySelectorAll('[data-a]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.a===$('aufbau').value)));
   $('qCtrl').querySelectorAll('[data-c]').forEach(b=>b.setAttribute('aria-pressed',String($(b.dataset.c).checked)));
   $('qCtrl').querySelectorAll('[data-k]').forEach(b=>b.setAttribute('aria-pressed',String(parseFloat(b.dataset.k)===parseFloat($('k').value))));
   $('qDin').setAttribute('aria-pressed',norm==='din');$('qVdi').setAttribute('aria-pressed',norm==='vdi');
   $('qN').setAttribute('aria-pressed',mode==='nieder');$('qD').setAttribute('aria-pressed',mode==='direkt');
+  qMark();
 }
+/* Ladeplan (Draufsicht, Fahrtrichtung nach rechts) */
+function qViz(){
+  const box=$('qViz');if(!box)return;
+  if(!LAST){box.innerHTML='<p class="hint" style="margin:8px 0">Bitte Eingaben prüfen.</p>';$('qVizCap').textContent='Draufsicht';return;}
+  const {p,rows}=LAST,W=360,H=176,bx=14,by=26,bw=296,bh=124;
+  const N=mode==='nieder', a=p.aufbau!=='none'?p.aufbau:null;
+  let lw,lh;
+  if(N){const sc=Math.min(200/Math.max(p.L,0.3),96/Math.max(p.B,0.3));lw=Math.max(34,Math.min(260,p.L*sc));lh=Math.max(30,Math.min(100,p.B*sc));}else{lw=120;lh=72;}
+  let lx=bx+(bw-lw)/2, ly=by+(bh-lh)/2;
+  const av=a&&p.anl.vor, ah=a&&p.anl.hin, as=a&&p.anl.seit;
+  if(av)lx=bx+bw-lw-3; else if(ah)lx=bx+3;
+  if(as)ly=by+3;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ladeplan von oben" style="display:block;width:100%;height:auto">
+   <defs><marker id="qva" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+   <text x="${bx}" y="16" font-size="11" fill="var(--muted)" font-family="var(--f-body)">Heck</text>
+   <text x="${bx+bw}" y="16" font-size="11" fill="var(--muted)" text-anchor="end" font-family="var(--f-body)">Fahrtrichtung</text>
+   <line x1="${bx+bw-80}" y1="12" x2="${bx+bw-82+0}" y2="12" stroke="none"/>
+   <path d="M ${bx+bw+8} ${by+16} h 26 a 8 8 0 0 1 8 8 v ${bh-32} a 8 8 0 0 1 -8 8 h -26 z" fill="var(--line-2)"/>
+   <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="6" fill="var(--panel-2)" stroke="var(--line-2)" stroke-width="2"/>`;
+  const wall=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--blue)" stroke-width="6" stroke-linecap="round"/>`;
+  if(a){s+=wall(bx+bw,by+4,bx+bw,by+bh-4);if(ah)s+=wall(bx,by+4,bx,by+bh-4);if(as)s+=wall(bx+4,by,bx+bw-4,by);}
+  s+=`<rect x="${lx}" y="${ly}" width="${lw}" height="${lh}" rx="4" fill="var(--wood)" stroke="var(--wood-line)" stroke-width="2"/>`;
+  let cap='';
+  if(N){
+    const n=Number(QS.num)||0, show=Math.min(n,12);
+    for(let i=0;i<show;i++){const x=lx+lw*(i+1)/(show+1);
+      s+=`<rect x="${x-3.5}" y="${by+2}" width="7" height="${bh-4}" rx="2" fill="var(--strap)" stroke="var(--strap-dark)" stroke-width="1"/><rect x="${x-6}" y="${by+bh-26}" width="12" height="16" rx="2" fill="var(--ink)"/>`;}
+    if(n>12)s+=`<text x="${lx+lw/2}" y="${ly+lh/2+5}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">+${n-12}</text>`;
+    cap=n===0?'Kein Gurt nötig':`${n} ${n===1?'Gurt':'Gurte'} quer, gleichmäßig verteilt`;
+  } else {
+    const c=[[lx,ly,lx-36,by+2],[lx+lw,ly,lx+lw+36,by+2],[lx,ly+lh,lx-36,by+bh-2],[lx+lw,ly+lh,lx+lw+36,by+bh-2]];
+    const ok=QS.cls==='ok';
+    c.forEach(([x1,y1,x2,y2])=>{s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${ok?'var(--strap)':'var(--bad)'}" stroke-width="6" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="4" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>`;});
+    cap=`4 Zurrmittel diagonal · ${ok?'ausreichend':'zu schwach'}`;
+  }
+  if(a&&(av||ah||as))cap+=' · Formschluss';
+  s+=`<text x="${bx+bw/2}" y="${H-6}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-body)">${N?`Ladung ${nf(p.L)} × ${nf(p.B)} m`:'Ladung schematisch'}${a?' · blau = Wand Code '+a:''}</text></svg>`;
+  box.innerHTML=s;$('qVizCap').textContent=cap;
+}
+$('qReset').onclick=()=>{const keepN=norm;loadValues({});if(keepN==='vdi')setNorm('vdi');updBlk();render();qBuild();window.scrollTo({top:0,behavior:'smooth'});};
 function qRender(){
   if(typeof curView==='undefined'||curView!=='schnell')return;
-  const h=$('hero');$('qRes').className='q-res '+QS.cls;
+  const h=$('hero');$('qRes').className='q-res '+QS.cls;qViz();
   $('qResIn').innerHTML=`<div class="qn">${QS.num}</div><div class="qt"><b>${QS.ttl}</b><span>${QS.line}</span>${QS.warn?`<em>⚠ ${QS.warn}</em>`:''}</div>`;
 }
 $('qDin').onclick=()=>{setNorm('din');qBuild();};$('qVdi').onclick=()=>{setNorm('vdi');qBuild();};
