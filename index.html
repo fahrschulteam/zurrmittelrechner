@@ -931,11 +931,58 @@ function stepsNieder(p,r){
 }
 
 
+function svgKipp(p,sd){
+  const r=v=>Math.round(v*10)/10, FY=262;
+  const s=Math.min(200/Math.max(p.B,0.2),190/Math.max(p.H,0.2));
+  const w=Math.max(70,Math.min(230,p.B*s)), hh=Math.max(70,Math.min(200,p.H*s));
+  const x0=250-w/2, x1=x0+w, ty=FY-hh, Sx=x0+w/2, Sy=FY-hh/2;
+  const st=sd.kStatus==='stabil';
+  const ang=12, rad=ang*Math.PI/180;
+  const rot=(x,y)=>{const dx=x-x1,dy=y-FY;return [x1+dx*Math.cos(rad)-dy*Math.sin(rad),FY+dx*Math.sin(rad)+dy*Math.cos(rad)];};
+  const g=[[x0,FY],[x1,FY],[x1,ty],[x0,ty]].map(([x,y])=>rot(x,y).map(r).join(',')).join(' ');
+  return `<figure class="kfig">
+  <svg class="kdraw" viewBox="0 0 560 330" role="img" aria-label="Kippen zur Seite: Schwerpunkt S in Höhe d, Abstand b zur Kippkante. Die Querkraft c_y mal F_G will kippen, die Gewichtskraft c_z mal F_G hält.">
+    <defs>
+      <marker id="tR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+      <marker id="tB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"/></marker>
+      <marker id="tK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker>
+      <marker id="tD" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M5,0 L5,10" stroke="var(--ink)" stroke-width="2"/></marker>
+      <pattern id="tH" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" stroke="var(--deck)" stroke-width="2"/></pattern>
+    </defs>
+    <text x="16" y="22" class="t-h">Kippen zur Seite · Ansicht von hinten</text>
+    <rect x="30" y="${FY}" width="440" height="20" fill="url(#tH)"/><line x1="30" y1="${FY}" x2="470" y2="${FY}" stroke="var(--ink)" stroke-width="3"/>
+    <polygon points="${g}" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <rect x="${r(x0)}" y="${r(ty)}" width="${r(w)}" height="${r(hh)}" fill="var(--wood)" stroke="var(--wood-line)" stroke-width="3"/>
+    <path d="M ${r(x1-26)} ${r(ty-16)} A 70 70 0 0 1 ${r(x1+34)} ${r(ty+16)}" fill="none" stroke="var(--muted)" stroke-width="2.5" marker-end="url(#tK)"/>
+    <circle cx="${r(x1)}" cy="${FY}" r="7" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+    <text x="${r(x1+12)}" y="${FY-10}" class="t-l">Kippkante</text>
+    <line x1="${r(Sx)}" y1="${r(Sy)}" x2="${r(Sx+104)}" y2="${r(Sy)}" stroke="var(--accent)" stroke-width="5" marker-end="url(#tR)"/>
+    <text x="${r(Sx+40)}" y="${r(Sy-12)}" class="t-c" style="paint-order:stroke;stroke:var(--panel);stroke-width:6px;stroke-linejoin:round" fill="var(--accent)">c<tspan class="t-sub" dy="4">y</tspan><tspan dy="-4"> · F</tspan><tspan class="t-sub" dy="4">G</tspan><tspan dy="-4"> kippt</tspan></text>
+    <line x1="${r(Sx)}" y1="${r(Sy)}" x2="${r(Sx)}" y2="${r(Sy+Math.min(86,hh/2-6))}" stroke="var(--blue)" stroke-width="5" marker-end="url(#tB)"/>
+    <text x="${r(Sx+12)}" y="${r(Sy+Math.min(86,hh/2-6)/2+20)}" text-anchor="start" class="t-c" style="paint-order:stroke;stroke:var(--panel);stroke-width:6px;stroke-linejoin:round" fill="var(--blue)">c<tspan class="t-sub" dy="4">z</tspan><tspan dy="-4"> · F</tspan><tspan class="t-sub" dy="4">G</tspan><tspan dy="-4"> hält</tspan></text>
+    <circle cx="${r(Sx)}" cy="${r(Sy)}" r="8" fill="var(--ink)"/><circle cx="${r(Sx)}" cy="${r(Sy)}" r="3" fill="var(--panel)"/>
+    <text x="${r(Sx-14)}" y="${r(Sy-10)}" text-anchor="end" class="t-f halo">S</text>
+    <line x1="${r(x0-28)}" y1="${FY}" x2="${r(x0-28)}" y2="${r(Sy)}" stroke="var(--ink)" stroke-width="1.6" marker-start="url(#tD)" marker-end="url(#tD)"/>
+    <line x1="${r(x0-34)}" y1="${r(Sy)}" x2="${r(Sx)}" y2="${r(Sy)}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="3 4"/>
+    <text x="${r(x0-36)}" y="${r((FY+Sy)/2+6)}" text-anchor="end" class="t-c">d = ${nf(sd.d)} m</text>
+    <line x1="${r(Sx)}" y1="${FY+44}" x2="${r(x1)}" y2="${FY+44}" stroke="var(--ink)" stroke-width="1.6" marker-start="url(#tD)" marker-end="url(#tD)"/>
+    <line x1="${r(Sx)}" y1="${r(Sy+8)}" x2="${r(Sx)}" y2="${FY+50}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="3 4"/>
+    <line x1="${r(x1)}" y1="${FY+8}" x2="${r(x1)}" y2="${FY+50}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="3 4"/>
+    <text x="${r((Sx+x1)/2)}" y="${FY+64}" text-anchor="middle" class="t-c">b = ${nf(sd.b)} m</text>
+  </svg>
+  <div class="kcalc">
+    <p><span class="kdot" style="background:var(--accent)"></span><strong>Kippendes Moment:</strong> c<sub>y</sub> · d = ${nf(sd.c)} · ${nf(sd.d)} m = <strong>${nf(sd.c*sd.d,3)}</strong></p>
+    <p><span class="kdot" style="background:var(--blue)"></span><strong>Haltendes Moment:</strong> c<sub>z</sub> · b = ${nf(p.cz)} · ${nf(sd.b)} m = <strong>${nf(p.cz*sd.b,3)}</strong></p>
+    <p class="ksum">${st?`Haltend ≥ kippend → <b style="color:var(--ok)">standsicher</b>, die Ladung kippt nicht.`:`Kippend &gt; haltend → <b style="color:var(--bad)">kippgefährdet</b>, zusätzliche Sicherung nötig.`}</p>
+  </div>
+  <figcaption class="hint">Je höher und schmaler die Ladung, desto größer d und kleiner b und desto eher kippt sie. Die gestrichelte Kontur zeigt die Kippbewegung um die Kippkante. Längs gilt dasselbe mit c<sub>x</sub> und der halben Länge.</figcaption>
+</figure>`;
+}
 function kippHtml(p,rows,tgov){
   const sd=rows.find(r=>r.lat), lv=rows.filter(r=>!r.lat);
   const pill=r=>r.kStatus==='stabil'?'<span class="pill ok">standsicher</span>':(r.lat?'<span class="pill bad">kippgefährdet</span>':'<span class="pill warn">kippgefährdet</span>');
   const all=[sd,...lv];
-  let h=`<p style="margin:0 0 10px;max-width:68ch">Eine Ladung kippt, wenn das kippende Moment (Beiwert · Schwerpunkthöhe d) größer ist als das haltende Moment (c<sub>z</sub> · Abstand b vom Schwerpunkt zur Kippkante). Der Schwerpunkt wird mittig angenommen.</p>
+  let h=`<p style="margin:0 0 10px;max-width:68ch">Eine Ladung kippt, wenn das kippende Moment (Beiwert · Schwerpunkthöhe d) größer ist als das haltende Moment (c<sub>z</sub> · Abstand b vom Schwerpunkt zur Kippkante). Der Schwerpunkt wird mittig angenommen.</p>${svgKipp(p,sd)}
   <div class="tablewrap"><table><thead><tr><th>Richtung</th><th style="text-align:right">kippend c · d</th><th style="text-align:right">haltend c<sub>z</sub> · b</th><th>Bewertung</th><th style="text-align:right">n gegen Kippen</th></tr></thead><tbody>`+
   all.map(r=>`<tr><td>${r.name}</td><td class="num">${nf(r.c)} · ${nf(r.d)} = ${nf(r.c*r.d,3)}</td><td class="num">${nf(p.cz)} · ${nf(r.b)} = ${nf(p.cz*r.b,3)}</td><td>${pill(r)}</td><td class="num">${r.lat?(r.kStatus==='rechnen'?'<strong>'+Math.ceil(r.nK-1e-9)+'</strong>':'0'):'<span class="hint">nicht berechnet *</span>'}</td></tr>`).join('')+'</tbody></table></div>'+
   `<div class="okbox" style="margin-top:12px"><strong>Keine Zusatzgurte:</strong> Die Gurte gegen Rutschen wirken gleichzeitig gegen Kippen zur Seite. Die Zahl in der letzten Spalte ist die Anzahl, die gegen Kippen insgesamt nötig ist. Am Ende gilt der größere Wert aus Rutschen und Kippen, die Werte werden nicht addiert.</div>
@@ -1047,7 +1094,7 @@ function render(){
       <div class="legend"><span><i style="background:var(--accent)"></i>maßgebende Richtung</span><span><i style="background:var(--blue)"></i>weitere Richtungen</span><span>Teilstriche = ganze Gurte</span></div>`;
     $('kippDot').hidden=!(sd.kStatus==='rechnen'||laengs);
     $('kippDot').className='dot'+(sd.kStatus==='rechnen'?'':' warn');
-    $('pKippen').innerHTML=`<h2 class="h">Kippgefahr</h2>`+kippHtml(p,rows,tgov);
+    $('pKippen').innerHTML='';
   } else {
     const ok=rows.every(r=>r.ok), util=gov.LCreq/p.lc;
     QS={cls:ok?'ok':'bad',num:ok?'✓':'✗',ttl:ok?'Zurrmittel reichen':'Zurrmittel zu schwach',line:`nötig ${nf0(Math.ceil(gov.LCreq))} daN · vorhanden ${nf0(p.lc)} daN`,warn:''};
