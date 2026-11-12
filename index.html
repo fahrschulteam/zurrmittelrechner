@@ -788,7 +788,7 @@ details.qacc .qc:last-child{border-bottom:0}
 <div class="mbar" id="mbar" hidden><button type="button" id="mbarBtn"><span class="mnum" id="mbarNum"></span><span class="mtxt"><b id="mbarT"></b><small id="mbarS"></small></span><span class="mgo">Details ↓</span></button></div>
 
 <footer class="foot">
-  <p>Zurrmittelrechner · Version 2.9 · © 2026 Fahrschulteam Lingen, Inh. Thorsten Gels · Alle Rechte vorbehalten · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info · <a href="mailto:lingen@fahrschulteam.info">lingen@fahrschulteam.info</a></p>
+  <p>Zurrmittelrechner · Version 2.10 · © 2026 Fahrschulteam Lingen, Inh. Thorsten Gels · Alle Rechte vorbehalten · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info · <a href="mailto:lingen@fahrschulteam.info">lingen@fahrschulteam.info</a></p>
   <p>Berechnung nach DIN EN 12195-1 oder VDI 2700 Blatt 2. Alle Angaben ohne Gewähr. Rechenhilfe, kein Ersatz für die Prüfung im Einzelfall.</p>
   <nav aria-label="Rechtliches"><a href="#impressum" data-legal="impressum">Impressum</a><a href="#datenschutz" data-legal="datenschutz">Datenschutz</a></nav>
 </footer>
@@ -1198,7 +1198,7 @@ function render(){
   if(mode==='nieder'){
     const sd=rows.find(r=>r.lat), nk=KIPP&&sd.kStatus==='rechnen'?Math.ceil(sd.nK-1e-9):0, n=Math.max(tgov.nRc,nk,1);
     const laengs=KIPP&&rows.some(r=>!r.lat&&r.kStatus!=='stabil'), kippGov=nk>tgov.nRc;
-    QS={cls:'',num:n,ttl:(n===1?'Zurrgurt':'Zurrgurte')+' nötig'+(rows.some(r=>r.bc>0)?' (mit Formschluss)':''),line:'Maßgebend: '+(kippGov?'Kippen zur Seite':'Rutschen '+tgov.name)+(KIPP?'':' · Kippen nicht geprüft'),warn:[KIPP&&sd.kStatus==='rechnen'?'Kippgefahr seitlich':'',laengs?'Längs kippgefährdet':''].filter(Boolean).join(' · ')};
+    QS={cls:'',num:n,ttl:(n===1?'Zurrgurt':'Zurrgurte')+' nötig'+(rows.some(r=>r.bc>0)?' (mit Formschluss)':''),line:KIPP?'':'Kippen nicht geprüft',warn:[KIPP&&sd.kStatus==='rechnen'?'Kippgefahr seitlich':'',laengs?'Längs kippgefährdet':''].filter(Boolean).join(' · ')};
     $('hero').className='card hero';
     $('hero').innerHTML=`<div class="num">${n}</div><div><p class="ttl">${n===1?'Zurrgurt':'Zurrgurte'} zum Niederzurren erforderlich</p>
       <p class="sub">mit S<sub>TF</sub> ${nf0(p.stf)} daN und Zurrwinkel α ${nf0(p.alpha)}°</p>
@@ -1608,8 +1608,8 @@ $('qReset').onclick=()=>{const keepN=norm;loadValues({});if(keepN==='vdi')setNor
 function qRender(){
   if(typeof curView==='undefined'||(curView!=='schnell'&&curView!=='rechenweg'))return;
   const h=$('hero');$('qRes').className='q-res '+QS.cls;qViz();
-  if($('rwRes')){$('rwRes').className='card rw-res '+QS.cls;$('rwRes').innerHTML=`<div class="qn">${QS.num}</div><div class="qt"><b>${QS.ttl}</b><span>${QS.line}</span>${QS.warn?`<em>⚠ ${QS.warn}</em>`:''}</div>`;}
-  $('qResIn').innerHTML=`<div class="qn">${QS.num}</div><div class="qt"><b>${QS.ttl}</b><span>${QS.line}</span>${QS.warn?`<em>⚠ ${QS.warn}</em>`:''}</div>`;
+  if($('rwRes')){$('rwRes').className='card rw-res '+QS.cls;$('rwRes').innerHTML=`<div class="qn">${QS.num}</div><div class="qt"><b>${QS.ttl}</b>${QS.line?`<span>${QS.line}</span>`:''}${QS.warn?`<em>⚠ ${QS.warn}</em>`:''}</div>`;}
+  $('qResIn').innerHTML=`<div class="qn">${QS.num}</div><div class="qt"><b>${QS.ttl}</b>${QS.line?`<span>${QS.line}</span>`:''}${QS.warn?`<em>⚠ ${QS.warn}</em>`:''}</div>`;
 }
 $('qDin').onclick=()=>{setNorm('din');qBuild();};$('qVdi').onclick=()=>{setNorm('vdi');qBuild();};
 $('qN').onclick=()=>{setMode('nieder');qBuild();};$('qD').onclick=()=>{setMode('direkt');qBuild();};
