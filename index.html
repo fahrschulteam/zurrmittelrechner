@@ -624,6 +624,7 @@ details.qacc .qc:last-child{border-bottom:0}
 <!-- ================= RECHENWEG ================= -->
 <section id="viewRechenweg" hidden>
   <div class="rw">
+    <div class="solbar" id="rwSolbar" hidden></div>
     <div class="view-head"><div><h1>Rechenweg</h1><p id="qSheetNorm"></p></div>
       <a href="#schnell" class="btn" id="rwBack" data-view="schnell">← Zurück zur Eingabe</a></div>
     <div class="card panel" style="padding-top:18px">
@@ -788,7 +789,7 @@ details.qacc .qc:last-child{border-bottom:0}
 <div class="mbar" id="mbar" hidden><button type="button" id="mbarBtn"><span class="mnum" id="mbarNum"></span><span class="mtxt"><b id="mbarT"></b><small id="mbarS"></small></span><span class="mgo">Details ↓</span></button></div>
 
 <footer class="foot">
-  <p>Zurrmittelrechner · Version 2.11 · © 2026 Fahrschulteam Lingen, Inh. Thorsten Gels · Alle Rechte vorbehalten · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info · <a href="mailto:lingen@fahrschulteam.info">lingen@fahrschulteam.info</a></p>
+  <p>Zurrmittelrechner · Version 2.12 · © 2026 Fahrschulteam Lingen, Inh. Thorsten Gels · Alle Rechte vorbehalten · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info · <a href="mailto:lingen@fahrschulteam.info">lingen@fahrschulteam.info</a></p>
   <p>Berechnung nach DIN EN 12195-1 oder VDI 2700 Blatt 2. Alle Angaben ohne Gewähr. Rechenhilfe, kein Ersatz für die Prüfung im Einzelfall.</p>
   <nav aria-label="Rechtliches"><a href="#impressum" data-legal="impressum">Impressum</a><a href="#datenschutz" data-legal="datenschutz">Datenschutz</a></nav>
 </footer>
@@ -1391,19 +1392,23 @@ function showTask(i){curTask=i;const t=TASKS[i];
   $('uebBody').innerHTML=`<article class="card task">
     <div class="t-head"><div><div class="eyebrow">Aufgabe ${i+1} von ${TASKS.length} · ${t.art==='d'?'Diagonalzurren':'Niederzurren'}</div><h2>${t.t}</h2></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-ghost" id="backList">← Alle Aufgaben</button>
-      <button type="button" class="btn btn-primary" id="solBtn">Lösung im Rechner zeigen</button></div></div>
+      <button type="button" class="btn" id="solBtn">Lösung im Rechner</button><button type="button" class="btn btn-primary" id="solRw">Lösung mit Formel und Rechenweg</button></div></div>
     <p class="lage">${t.lage}</p>
     <div class="given-box"><h3>Gegeben</h3><dl class="given">${t.g.map(([k,val])=>`<div><dt>${k}</dt><dd>${val}</dd></div>`).join('')}</dl>
       <p class="hint">Beiwerte Straße nach DIN EN 12195-1: c<sub>x</sub> 0,8 vorn / 0,5 hinten · c<sub>y</sub> 0,5 · c<sub>z</sub> 1,0${t.art==='n'?' · f<sub>s</sub> 1,25 vorn, sonst 1,1 · Schwerpunkt mittig':''}</p></div>
     <div class="gesucht"><strong>Gesucht</strong><ul>${t.q.map(q=>`<li>${q}</li>`).join('')}</ul></div>
   </article>`;
-  $('solBtn').onclick=()=>showSolution(i);$('backList').onclick=showList;window.scrollTo(0,0);}
-function showSolution(i){const t=TASKS[i];
+  $('solBtn').onclick=()=>showSolution(i,'schnell');$('solRw').onclick=()=>showSolution(i,'rechenweg');$('backList').onclick=showList;window.scrollTo(0,0);}
+function showSolution(i,target){const t=TASKS[i];target=target==='rechenweg'?'rechenweg':'schnell';
   if(norm!=='din')setNorm('din',true);
-  loadValues(t.v);setMode(t.art==='d'?'direkt':'nieder');setRtab('uebersicht');go('schnell',true);
-  const sb=$('qSolbar');sb.hidden=false;
-  sb.innerHTML=`<span>Lösung zu Aufgabe ${i+1}: ${t.t}</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="backTask">← Zurück zur Aufgabe</button><button type="button" class="btn btn-ghost" id="closeSol">Schließen</button></span>`;
-  $('backTask').onclick=()=>{go('uebungen');showTask(i);};$('closeSol').onclick=()=>{sb.hidden=true;curTask=null;};}
+  loadValues(t.v);setMode(t.art==='d'?'direkt':'nieder');setRtab('uebersicht');go(target,true);
+  const sb=$(target==='rechenweg'?'rwSolbar':'qSolbar'), other=target==='rechenweg'?'schnell':'rechenweg';
+  ['qSolbar','rwSolbar'].forEach(id=>{if($(id))$(id).hidden=true;});
+  sb.hidden=false;
+  sb.innerHTML=`<span>Lösung zu Aufgabe ${i+1}: ${t.t}</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="backTask">← Zurück zur Aufgabe</button><button type="button" class="btn" id="swapSol">${target==='rechenweg'?'Im Rechner zeigen':'Formel und Rechenweg'}</button><button type="button" class="btn btn-ghost" id="closeSol">Schließen</button></span>`;
+  $('backTask').onclick=()=>{go('uebungen');showTask(i);};
+  $('swapSol').onclick=()=>showSolution(i,other);
+  $('closeSol').onclick=()=>{sb.hidden=true;curTask=null;};}
 
 /* ---------- Wissen ---------- */
 $('gloss').innerHTML=[['m','Masse der Ladung in kg'],['F<sub>G</sub>','Gewichtskraft in daN (m · g / 10)'],['g','Erdbeschleunigung 9,81 m/s²'],
@@ -1436,7 +1441,7 @@ function go(view,keep){if(!VIEWS[view]||view==='rechner')view='schnell';if(view=
   if(view==='uebungen'&&curTask===null)showList();
   if(view==='schnell'){qBuild();}
   render();
-  if(view!=='rechner'&&!keep){$('solbar').hidden=true;if($('qSolbar'))$('qSolbar').hidden=true;}
+  if(view!=='rechner'&&!keep){$('solbar').hidden=true;if($('qSolbar'))$('qSolbar').hidden=true;if($('rwSolbar'))$('rwSolbar').hidden=true;}
   if(location.hash!=='#'+view){try{history.replaceState(null,'','#'+view)}catch(e){location.hash=view}}
   window.scrollTo(0,0);}
 document.querySelectorAll('.nav a').forEach(a=>a.onclick=e=>{e.preventDefault();if(a.dataset.view==='uebungen')curTask=null;go(a.dataset.view);});
