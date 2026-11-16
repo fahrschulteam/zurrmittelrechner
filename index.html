@@ -789,7 +789,7 @@ details.qacc .qc:last-child{border-bottom:0}
 <div class="mbar" id="mbar" hidden><button type="button" id="mbarBtn"><span class="mnum" id="mbarNum"></span><span class="mtxt"><b id="mbarT"></b><small id="mbarS"></small></span><span class="mgo">Details ↓</span></button></div>
 
 <footer class="foot">
-  <p>Zurrmittelrechner · Version 2.12 · © 2026 Fahrschulteam Lingen, Inh. Thorsten Gels · Alle Rechte vorbehalten · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info · <a href="mailto:lingen@fahrschulteam.info">lingen@fahrschulteam.info</a></p>
+  <p>Zurrmittelrechner · Version 2.13 · © 2026 Fahrschulteam Lingen, Inh. Thorsten Gels · Alle Rechte vorbehalten · Rheiner Str. 158 · 49809 Lingen (Ems) · fahrschulteam.info · <a href="mailto:lingen@fahrschulteam.info">lingen@fahrschulteam.info</a></p>
   <p>Berechnung nach DIN EN 12195-1 oder VDI 2700 Blatt 2. Alle Angaben ohne Gewähr. Rechenhilfe, kein Ersatz für die Prüfung im Einzelfall.</p>
   <nav aria-label="Rechtliches"><a href="#impressum" data-legal="impressum">Impressum</a><a href="#datenschutz" data-legal="datenschutz">Datenschutz</a></nav>
 </footer>
@@ -887,14 +887,14 @@ function calcNieder(p){
     const K=p.norm==='vdi'?p.k:2;
     const bc=blockF(r.k,p), Freq=drive>0?drive*FG*r.fs:0, Frest=Math.max(0,Freq-bc);
     const nR = Frest/(K*p.mu*sa*p.stf);
-    const b=r.w/2, kip=r.c*d-p.cz*b;
+    const b=r.w/2, ck=r.lat?0.6:r.c, ratio=b/d, kip=ck*d-p.cz*b;
     let nK=0, kStatus='stabil';
     if(kip>1e-9){
       if(r.lat){ nK=(r.fs*FG*kip)/(r.w*sa*p.stf); kStatus='rechnen'; }
       else kStatus='laengs';
     }
     const need=Math.max(Math.ceil(nR-1e-9),r.lat?Math.ceil(nK-1e-9):0);
-    return {...r,FG,sa,drive,nR,d,b,kip,nK,kStatus,need,K,bc,Freq,Frest};
+    return {...r,FG,sa,drive,nR,d,b,ck,ratio,kip,nK,kStatus,need,K,bc,Freq,Frest};
   });
 }
 
@@ -1100,39 +1100,42 @@ function svgKipp(p,sd){
     <text x="${r((Sx+x1)/2)}" y="${FY+64}" text-anchor="middle" class="t-c">b = ${nf(sd.b)} m</text>
   </svg>
   <div class="kcalc">
-    <p><span class="kdot" style="background:var(--accent)"></span><strong>Kippendes Moment:</strong> c<sub>y</sub> · d = ${nf(sd.c)} · ${nf(sd.d)} m = <strong>${nf(sd.c*sd.d,3)}</strong></p>
-    <p><span class="kdot" style="background:var(--blue)"></span><strong>Haltendes Moment:</strong> c<sub>z</sub> · b = ${nf(p.cz)} · ${nf(sd.b)} m = <strong>${nf(p.cz*sd.b,3)}</strong></p>
-    <p class="ksum">${st?`Haltend ≥ kippend → <b style="color:var(--ok)">standsicher</b>, die Ladung kippt nicht.`:`Kippend &gt; haltend → <b style="color:var(--bad)">kippgefährdet</b>, zusätzliche Sicherung nötig.`}</p>
+    <p><strong>Standfestigkeit:</strong> b ÷ d = ${frac(nf(sd.b)+' m',nf(sd.d)+' m')} ≈ <strong>${nf(sd.ratio)}</strong></p>
+    <p><strong>Zur Seite:</strong> ${nf(sd.ratio)} ${st?'≥':'&lt;'} ${nf(sd.ck)}</p>
+    <p class="ksum">${st?`→ <b style="color:var(--ok)">statisch standfest</b>, die Ladung kippt nicht zur Seite.`:`→ <b style="color:var(--bad)">nicht standfest</b>, zusätzliche Sicherung gegen Kippen nötig.`}</p>
   </div>
-  <figcaption class="hint">Je höher und schmaler die Ladung, desto größer d und kleiner b und desto eher kippt sie. Die gestrichelte Kontur zeigt die Kippbewegung um die Kippkante. Längs gilt dasselbe mit c<sub>x</sub> und der halben Länge.</figcaption>
+  <figcaption class="hint">Je höher und schmaler die Ladung, desto größer d und kleiner b und desto eher kippt sie. Die gestrichelte Kontur zeigt die Kippbewegung um die Kippkante. Grenzwerte: nach vorn 0,8 · nach hinten 0,5 · zur Seite 0,6. Längs gilt b = L / 2.</figcaption>
 </figure>`;
 }
 function kippHtml(p,rows,tgov){
   const sd=rows.find(r=>r.lat), lv=rows.filter(r=>!r.lat);
-  const pill=r=>r.kStatus==='stabil'?'<span class="pill ok">standsicher</span>':(r.lat?'<span class="pill bad">kippgefährdet</span>':'<span class="pill warn">kippgefährdet</span>');
-  const all=[sd,...lv];
-  let h=`<p style="margin:0 0 10px;max-width:68ch">Eine Ladung kippt, wenn das kippende Moment (Beiwert · Schwerpunkthöhe d) größer ist als das haltende Moment (c<sub>z</sub> · Abstand b vom Schwerpunkt zur Kippkante). Der Schwerpunkt wird mittig angenommen.</p>${svgKipp(p,sd)}
-  <div class="tablewrap"><table><thead><tr><th>Richtung</th><th style="text-align:right">kippend c · d</th><th style="text-align:right">haltend c<sub>z</sub> · b</th><th>Bewertung</th><th style="text-align:right">n gegen Kippen</th></tr></thead><tbody>`+
-  all.map(r=>`<tr><td>${r.name}</td><td class="num">${nf(r.c)} · ${nf(r.d)} = ${nf(r.c*r.d,3)}</td><td class="num">${nf(p.cz)} · ${nf(r.b)} = ${nf(p.cz*r.b,3)}</td><td>${pill(r)}</td><td class="num">${r.lat?(r.kStatus==='rechnen'?'<strong>'+Math.ceil(r.nK-1e-9)+'</strong>':'0'):'<span class="hint">nicht berechnet *</span>'}</td></tr>`).join('')+'</tbody></table></div>'+
-  `<div class="okbox" style="margin-top:12px"><strong>Keine Zusatzgurte:</strong> Die Gurte gegen Rutschen wirken gleichzeitig gegen Kippen zur Seite. Die Zahl in der letzten Spalte ist die Anzahl, die gegen Kippen insgesamt nötig ist. Am Ende gilt der größere Wert aus Rutschen und Kippen, die Werte werden nicht addiert.</div>
-  <p class="hint" style="margin:6px 0 0">* Kippen nach vorn und hinten: Ob die quer laufenden Niederzurrungen dagegen ausreichen, berechnet dieser Rechner nicht. Ist die Ladung längs kippgefährdet, wird sie durch Formschluss (z. B. an der Stirnwand) oder eine Kopfschlinge gesichert.</p>`;
+  const pill=r=>r.kStatus==='stabil'?'<span class="pill ok">standfest</span>':(r.lat?'<span class="pill bad">nicht standfest</span>':'<span class="pill warn">nicht standfest</span>');
+  const cmp=r=>`${nf(r.ratio)} ${r.kStatus==='stabil'?'≥':'&lt;'} ${nf(r.ck)}`;
+  const nm=r=>r.lat?'Zur Seite':(r.c>0.6?'Nach vorn':'Nach hinten');
+  const all=[lv.find(r=>r.c>0.6)||lv[0],...lv.filter(r=>r.c<=0.6),sd];
+  let h=`<p style="margin:0 0 10px;max-width:68ch">Eine Ladung ist <strong>standfest</strong>, wenn das Verhältnis b ÷ d mindestens so groß ist wie der Beschleunigungsbeiwert der Richtung: <strong>nach vorn 0,8 · nach hinten 0,5 · zur Seite 0,6</strong>. b ist der Abstand vom Schwerpunkt zur Kippkante, d die Schwerpunkthöhe. Der Schwerpunkt wird mittig angenommen.</p>${svgKipp(p,sd)}
+  <div class="tablewrap"><table><thead><tr><th>Richtung</th><th style="text-align:right">b ÷ d</th><th style="text-align:right">Grenzwert</th><th>Bewertung</th><th style="text-align:right">n gegen Kippen</th></tr></thead><tbody>`+
+  all.map(r=>`<tr><td>${r.name}</td><td class="num">${nf(r.b)} ÷ ${nf(r.d)} ≈ ${nf(r.ratio)}</td><td class="num">${nf(r.ck)}</td><td>${pill(r)}</td><td class="num">${r.lat?(r.kStatus==='rechnen'?'<strong>'+Math.ceil(r.nK-1e-9)+'</strong>':'0'):'<span class="hint">nicht berechnet *</span>'}</td></tr>`).join('')+'</tbody></table></div>'+
+  `<div class="okbox" style="margin-top:12px"><strong>Keine Zusatzgurte:</strong> Die Gurte gegen Rutschen wirken gleichzeitig gegen Kippen zur Seite. Am Ende gilt der größere Wert aus Rutschen und Kippen, die Werte werden nicht addiert. Die Rutschsicherung bleibt immer erforderlich.</div>
+  <p class="hint" style="margin:6px 0 0">* Kippen nach vorn und hinten: Ob die quer laufenden Niederzurrungen dagegen ausreichen, berechnet dieser Rechner nicht. Ist die Ladung längs nicht standfest, wird sie durch Formschluss (z. B. an der Stirnwand) oder eine Kopfschlinge gesichert.</p>`;
   h+=`<ol class="steps" style="margin-top:16px">
     <li class="step"><div><h4>Schwerpunkthöhe und Abstand zur Kippkante</h4>
-      <div class="math">d = H / 2 = ${nf(p.H)} / 2 = ${nf(sd.d)} m<span class="gap"></span>b<sub>seitlich</sub> = B / 2 = ${nf(sd.b)} m<span class="gap"></span>b<sub>längs</sub> = L / 2 = ${nf(lv[0].b)} m</div></div></li>
-    <li class="step"><div><h4>Kippen zur Seite prüfen</h4>
-      <div class="math">c<sub>y</sub> · d − c<sub>z</sub> · b = ${nf(sd.c)} · ${nf(sd.d)} − ${nf(p.cz)} · ${nf(sd.b)} = <b>${nf(sd.kip,3)}</b></div>
-      ${sd.kStatus==='stabil'?'<p class="okbox">Ergebnis ≤ 0: zur Seite standsicher. Keine zusätzlichen Zurrmittel gegen Kippen nötig.</p>':'<p class="note">Ergebnis &gt; 0: Die Ladung ist zur Seite kippgefährdet. Die nötige Anzahl wird im nächsten Schritt berechnet.</p>'}</div></li>`;
+      <p>Bei mittigem Schwerpunkt liegt er auf halber Höhe und halber Breite bzw. Länge.</p>
+      <div class="math">d = H ÷ 2 = ${nf(p.H)} ÷ 2 = ${nf(sd.d)} m<span class="gap"></span>b<sub>seitlich</sub> = B ÷ 2 = ${nf(sd.b)} m<span class="gap"></span>b<sub>längs</sub> = L ÷ 2 = ${nf(lv[0].b)} m</div></div></li>
+    <li class="step"><div><h4>Verhältnis b ÷ d berechnen</h4>
+      <div class="math">zur Seite: b ÷ d = ${frac(nf(sd.b)+' m',nf(sd.d)+' m')} ≈ <b>${nf(sd.ratio)}</b></div>
+      <div class="math">längs: b ÷ d = ${frac(nf(lv[0].b)+' m',nf(lv[0].d)+' m')} ≈ <b>${nf(lv[0].ratio)}</b></div></div></li>
+    <li class="step"><div><h4>Mit dem Beiwert vergleichen</h4>
+      ${all.map(r=>`<div class="math"><b>${nm(r)}:</b><span class="gap"></span>${cmp(r)}<span class="gap"></span>${r.kStatus==='stabil'?(r.lat?'<b style="color:var(--ok)">statisch standfest</b>':'<b style="color:var(--ok)">standfest</b>'):'<b style="color:var(--bad)">nicht standfest</b>'}</div>`).join('')}
+      ${lv.some(r=>r.kStatus!=='stabil')?'<p class="note">Längs nicht standfest: Formschluss (z. B. an der Stirnwand) oder Kopfschlinge verwenden.</p>':''}</div></li>`;
   if(sd.kStatus==='rechnen'){
     h+=`<li class="step"><div><h4>Anzahl Zurrmittel gegen Kippen zur Seite</h4>
-      <p>Der Gurt hält die Ladung über die gesamte Breite B als Hebelarm fest.</p>
+      <p>Der Gurt hält die Ladung über die gesamte Breite B als Hebelarm fest. Gerechnet wird mit dem Beiwert 0,6 für Kippen zur Seite.</p>
       ${p.norm==='vdi'?`<div class="math">n = ${frac(`F<sub>G</sub> · (c<sub>y</sub> · d − c<sub>z</sub> · b)`,`B · sin α · S<sub>TF</sub>`)}</div>
-      <div class="math">n = ${frac(`${nf(sd.FG,1)} daN · ${nf(sd.kip,3)}`,`${nf(p.B)} · ${nf(sd.sa,3)} · ${nf0(p.stf)} daN`)} = <b>${nf(sd.nK)}</b></div><p class="hint">Momentengleichgewicht um die Kippkante wie in der klassischen VDI-Berechnung, ohne Sicherheitsbeiwert.</p>`:`<div class="math">n = ${frac(`F<sub>G</sub> · (c<sub>y</sub> · d − c<sub>z</sub> · b)`,`B · sin α · S<sub>TF</sub>`)} · f<sub>s</sub></div>
-      <div class="math">n = ${frac(`${nf(sd.FG,1)} daN · ${nf(sd.kip,3)}`,`${nf(p.B)} · ${nf(sd.sa,3)} · ${nf0(p.stf)} daN`)} · ${nf(sd.fs)} = <b>${nf(sd.nK)}</b></div>`}
+      <div class="math">n = ${frac(`${nf(sd.FG,1)} daN · (${nf(sd.ck)} · ${nf(sd.d)} − ${nf(p.cz)} · ${nf(sd.b)})`,`${nf(p.B)} · ${nf(sd.sa,3)} · ${nf0(p.stf)} daN`)} = <b>${nf(sd.nK)}</b></div><p class="hint">Momentengleichgewicht um die Kippkante, ohne Sicherheitsbeiwert.</p>`:`<div class="math">n = ${frac(`F<sub>G</sub> · (c<sub>y</sub> · d − c<sub>z</sub> · b)`,`B · sin α · S<sub>TF</sub>`)} · f<sub>s</sub></div>
+      <div class="math">n = ${frac(`${nf(sd.FG,1)} daN · (${nf(sd.ck)} · ${nf(sd.d)} − ${nf(p.cz)} · ${nf(sd.b)})`,`${nf(p.B)} · ${nf(sd.sa,3)} · ${nf0(p.stf)} daN`)} · ${nf(sd.fs)} = <b>${nf(sd.nK)}</b></div>`}
       <p>Aufgerundet: <strong>${Math.ceil(sd.nK-1e-9)} Zurrmittel</strong>.</p></div></li>`;
   }
-  h+=`<li class="step"><div><h4>Kippen nach vorn und hinten prüfen</h4>
-      ${lv.map(r=>`<div class="math">${r.name}: c<sub>x</sub> · d − c<sub>z</sub> · b = ${nf(r.c)} · ${nf(r.d)} − ${nf(p.cz)} · ${nf(r.b)} = <b>${nf(r.kip,3)}</b>  ${pill(r)}</div>`).join('')}
-      ${lv.some(r=>r.kStatus!=='stabil')?'<p class="note">Die Ladung ist in Längsrichtung kippgefährdet. Ob die vorhandenen Niederzurrungen das Kippen nach vorn oder hinten verhindern, wird hier nicht berechnet. Sichere Lösung: Formschluss (z. B. an die Stirnwand) oder Kopfschlinge.</p>':'<p class="okbox">In Längsrichtung standsicher.</p>'}</div></li>`;
   const nk=sd.kStatus==='rechnen'?Math.ceil(sd.nK-1e-9):0, nr=tgov.nRc, n=Math.max(nr,nk,1);
   h+=`<li class="step"><div><h4>Gesamtergebnis Niederzurren</h4>
       <p>Rutschen und Kippen werden getrennt gerechnet. Es gilt der größere Wert, die Gurte werden nicht addiert, weil jeder Gurt gegen beides wirkt.</p>
@@ -1199,19 +1202,19 @@ function render(){
   if(mode==='nieder'){
     const sd=rows.find(r=>r.lat), nk=KIPP&&sd.kStatus==='rechnen'?Math.ceil(sd.nK-1e-9):0, n=Math.max(tgov.nRc,nk,1);
     const laengs=KIPP&&rows.some(r=>!r.lat&&r.kStatus!=='stabil'), kippGov=nk>tgov.nRc;
-    QS={cls:'',num:n,ttl:(n===1?'Zurrgurt':'Zurrgurte')+' nötig'+(rows.some(r=>r.bc>0)?' (mit Formschluss)':''),line:KIPP?'':'Kippen nicht geprüft',warn:[KIPP&&sd.kStatus==='rechnen'?'Kippgefahr seitlich':'',laengs?'Längs kippgefährdet':''].filter(Boolean).join(' · ')};
+    QS={cls:'',num:n,ttl:(n===1?'Zurrgurt':'Zurrgurte')+' nötig'+(rows.some(r=>r.bc>0)?' (mit Formschluss)':''),line:KIPP?'':'Kippen nicht geprüft',warn:[KIPP&&sd.kStatus==='rechnen'?'Kippgefahr seitlich':'',laengs?'Längs nicht standfest':''].filter(Boolean).join(' · ')};
     $('hero').className='card hero';
     $('hero').innerHTML=`<div class="num">${n}</div><div><p class="ttl">${n===1?'Zurrgurt':'Zurrgurte'} zum Niederzurren erforderlich</p>
       <p class="sub">mit S<sub>TF</sub> ${nf0(p.stf)} daN und Zurrwinkel α ${nf0(p.alpha)}°</p>
       <div class="chips"><span class="chip red">Maßgebend: ${kippGov?'Kippen zur Seite':'Rutschen '+tgov.name}</span>${blkChips(rows)}<span class="chip">${norm==='vdi'?'VDI 2700':'DIN EN 12195-1'}</span>
-      ${!KIPP?`<span class="chip">Kippgefahr nicht geprüft</span>`:sd.kStatus==='rechnen'?`<span class="chip bad">Kippgefahr zur Seite</span>`:`<span class="chip ok">Zur Seite standsicher</span>`}
-      ${!KIPP?'':laengs?`<span class="chip warn">Längs kippgefährdet: Formschluss oder Kopfschlinge</span>`:`<span class="chip ok">Längs standsicher</span>`}
+      ${!KIPP?`<span class="chip">Kippgefahr nicht geprüft</span>`:sd.kStatus==='rechnen'?`<span class="chip bad">Kippgefahr zur Seite</span>`:`<span class="chip ok">Zur Seite standfest</span>`}
+      ${!KIPP?'':laengs?`<span class="chip warn">Längs nicht standfest: Formschluss oder Kopfschlinge</span>`:`<span class="chip ok">Längs standfest</span>`}
       ${tgov.nRc===0&&nk===0?`<span class="chip">Reibung allein reicht rechnerisch</span>`:''}</div></div>`;
     const sa=Math.sin(rad(p.alpha));
     $('kpis').innerHTML=kpi('Gewichtskraft F<sub>G</sub>',nf0(FG),'daN',`${nf0(p.m)} kg · 9,81 m/s²`)+
       kpi('Anpresskraft je Gurt',nf0((norm==='vdi'?p.k:2)*p.stf*sa),'daN','2 · S<sub>TF</sub> · sin α')+
       kpi('Rutschen',tgov.nRc,tgov.nRc===1?'Gurt':'Gurte',`maßgebend ${tgov.name}`)+
-      kpi('Kippen zur Seite',nk,nk===1?'Gurt':'Gurte',sd.kStatus==='rechnen'?'kippgefährdet':'standsicher');
+      kpi('Kippen zur Seite',nk,nk===1?'Gurt':'Gurte',sd.kStatus==='rechnen'?'nicht standfest':'standfest');
     // Übersicht: Balken
     const max=Math.max(...rows.map(r=>r.nR),1);
     const scale=Math.max(Math.ceil(max),1);
@@ -1250,7 +1253,7 @@ function render(){
   $('dirpills').querySelectorAll('button').forEach(b=>b.onclick=()=>{dirTab=b.dataset.k;render();});
   const r=rows.find(x=>x.k===dirTab);
   const stepsHtml=mode==='nieder'?stepsNieder(p,r):stepsDirekt(p,r);
-  if(curView==='schnell'||curView==='rechenweg'){$('steps').innerHTML='';$('qSteps').innerHTML=stepsHtml;$('qKipp').innerHTML=mode!=='nieder'?'':KIPP?'<h3>Kippgefahr</h3>'+kippHtml(p,rows,tgov):'<div class="kipp-off"><h3>Kippgefahr</h3><p>Die Kippgefahr wurde nicht geprüft. Bei hoher, schmaler Ladung sollte sie geprüft werden.</p><button type="button" class="btn" id="kippOn">Kippgefahr jetzt prüfen</button></div>';
+  if(curView==='schnell'||curView==='rechenweg'){$('steps').innerHTML='';$('qSteps').innerHTML=stepsHtml;$('qKipp').innerHTML=mode!=='nieder'?'':KIPP?'<h3>Standfestigkeit (Kippsicherheit)</h3>'+kippHtml(p,rows,tgov):'<div class="kipp-off"><h3>Kippgefahr</h3><p>Die Kippgefahr wurde nicht geprüft. Bei hoher, schmaler Ladung sollte sie geprüft werden.</p><button type="button" class="btn" id="kippOn">Kippgefahr jetzt prüfen</button></div>';
     if($('kippOn'))$('kippOn').onclick=()=>{KIPP=true;go('schnell');setTimeout(()=>{const s=$('qKippSec');if(s)s.scrollIntoView({behavior:'smooth',block:'start'});},60);};
     $('qPills').innerHTML=$('dirpills').innerHTML;$('qPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{dirTab=b.dataset.k;render();});
     $('qSheetNorm').textContent='Formeln und Lösung für die Werte aus „Schnell“ · '+(norm==='vdi'?'VDI 2700 Blatt 2':'DIN EN 12195-1')+' · '+(mode==='nieder'?'Niederzurren':'Diagonalzurren');}
@@ -1350,7 +1353,7 @@ const TASKS=[
   lage:'Eine Europalette mit Getränkekisten wird auf einem Transporter mit Aluminium-Riffelboden befördert. Es wird niedergezurrt.',
   v:{m:800,H:1.5,B:0.8,L:1.2,mu:0.40,sel:'0-1',stf:400,alpha:70},
   g:[['Masse','800 kg'],['Maße (L × B × H)','1,2 × 0,8 × 1,5 m'],['Reibbeiwert μ','0,40 (Holz auf Alu geriffelt)'],['Vorspannkraft S<sub>TF</sub>','400 daN'],['Zurrwinkel α','70°']],
-  q:['Wie viele Zurrgurte sind nötig?','Ist die Palette kippgefährdet?']},
+  q:['Wie viele Zurrgurte sind nötig?','Ist die Palette standfest?']},
  {t:'Dieselbe Palette mit Antirutschmatte',art:'n',
   lage:'Wie Aufgabe 2, aber unter die Palette werden Antirutschmatten gelegt. Alle anderen Werte bleiben gleich.',
   v:{m:800,H:1.5,B:0.8,L:1.2,mu:0.60,sel:'4-0',stf:400,alpha:70},
@@ -1360,7 +1363,7 @@ const TASKS=[
   lage:'Ein Schaltschrank steht aufrecht auf einer Sperrholz-Ladefläche. Er ist hoch und schmal. Gesichert wird durch Niederzurren über die Oberseite.',
   v:{m:600,H:2.0,B:0.6,L:0.8,mu:0.45,sel:'3-0',stf:350,alpha:85},
   g:[['Masse','600 kg'],['Maße (L × B × H)','0,8 × 0,6 × 2,0 m'],['Reibbeiwert μ','0,45 (Stahl auf Sperrholz)'],['Vorspannkraft S<sub>TF</sub>','350 daN'],['Zurrwinkel α','85°']],
-  q:['Reicht Niederzurren gegen Rutschen?','Ist der Schrank kippgefährdet – zur Seite und nach vorn?','Wie viele Zurrgurte sind nötig und was ist zusätzlich zu tun?']},
+  q:['Reicht Niederzurren gegen Rutschen?','Ist der Schrank standfest – zur Seite und nach vorn?','Wie viele Zurrgurte sind nötig und was ist zusätzlich zu tun?']},
  {t:'Steinpaket auf Antirutschmatte',art:'n',
   lage:'Ein Paket Pflastersteine auf einer Holzpalette wird auf einem Baustoff-Lkw transportiert. Unter der Palette liegt eine Antirutschmatte.',
   v:{m:2400,H:1.16,B:0.5,L:1.0,mu:0.60,sel:'4-0',stf:400,alpha:75},
